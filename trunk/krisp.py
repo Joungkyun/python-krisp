@@ -139,7 +139,7 @@ long2prefix = _krisp.klong2prefix
 
 
 
-# $Id: krisp.py,v 1.4 2010-06-20 18:20:17 oops Exp $
+# $Id: krisp.py,v 1.5 2010-06-20 18:28:32 oops Exp $
 
 def modversion () :
 	return '2.0.0'
@@ -155,6 +155,10 @@ def long2ip (longip) :
 
     ip.reverse ()
     return '.'.join (map (str, ip))
+
+def mask2prefix (mask) :
+	lmask = _krisp.ip2long (mask);
+	return _krisp.long2prefix (lmask);
 
 from copy import deepcopy
 
