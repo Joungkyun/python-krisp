@@ -1,6 +1,14 @@
-$Id: Changelog,v 1.1.1.1 2008-04-30 14:34:15 oops Exp $
+$Id: Changelog,v 1.2 2010-06-20 05:59:50 oops Exp $
 
 python KRISP Module Changelog
+
+
+*2.0.0
+--------------------------------------------------------------------------------
+Sun Jun 20 2010
+by JoungKyun.Kim <http://oops.org>
+	- 2.0 tree start
+	- require over libkrisp 3.x
 
 
 *1.0.0

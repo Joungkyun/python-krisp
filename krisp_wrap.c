@@ -6,8 +6,6 @@
  * coding conventions designed to improve portability and efficiency. Do not make
  * changes to this file unless you know what you are doing--modify the SWIG 
  * interface file instead. 
- *
- * $Id: krisp_wrap.c,v 1.1.1.1 2008-04-30 14:34:15 oops Exp $
  * ----------------------------------------------------------------------------- */
 
 #define SWIGPYTHON
@@ -292,8 +290,6 @@ SWIGINTERNINLINE int SWIG_CheckState(int r) {
 
 
 #include <string.h>
-
-extern char dberr[1024];
 
 #ifdef __cplusplus
 extern "C" {
@@ -2446,10 +2442,14 @@ SWIG_Python_MustGetPtr(PyObject *obj, swig_type_info *ty, int argnum, int flags)
 
 /* -------- TYPES TABLE (BEGIN) -------- */
 
-#define SWIGTYPE_p_char swig_types[0]
-#define SWIGTYPE_p_int swig_types[1]
-static swig_type_info *swig_types[3];
-static swig_module_info swig_module = {swig_types, 2, 0, 0, 0, 0};
+#define SWIGTYPE_p_KRNET_API swig_types[0]
+#define SWIGTYPE_p_KRNET_API_EX swig_types[1]
+#define SWIGTYPE_p_KR_API swig_types[2]
+#define SWIGTYPE_p_char swig_types[3]
+#define SWIGTYPE_p_p_char swig_types[4]
+#define SWIGTYPE_p_unsigned_long swig_types[5]
+static swig_type_info *swig_types[7];
+static swig_module_info swig_module = {swig_types, 6, 0, 0, 0, 0};
 #define SWIG_TypeQuery(name) SWIG_TypeQueryModule(&swig_module, &swig_module, name)
 #define SWIG_MangledTypeQuery(name) SWIG_MangledTypeQueryModule(&swig_module, &swig_module, name)
 
@@ -2475,27 +2475,8 @@ static swig_module_info swig_module = {swig_types, 2, 0, 0, 0, 0};
 #define SWIG_as_voidptrptr(a) ((void)SWIG_as_voidptr(*a),(void**)(a)) 
 
 
-
-
-  static int *new_intp() { 
-    return (int *)malloc(sizeof(int));
-  }
-  
-  static int *copy_intp(int value) { 
-    return (int *)memcpy((int *)malloc(sizeof(int)),&value,sizeof(int));
-  }
-
-  static void delete_intp(int *self) { 
-    if (self) free((char*)self);
-  }
-
-  static void intp_assign(int *self, int value) {
-    *self = value;
-  }
-
-  static int intp_value(int *self) {
-    return *self;
-  }
+#include <sys/types.h>
+#include <krisp.h>
 
 
 #include <limits.h>
@@ -2630,15 +2611,15 @@ SWIG_AsVal_long (PyObject *obj, long* val)
 
 
 SWIGINTERN int
-SWIG_AsVal_int (PyObject * obj, int *val)
+SWIG_AsVal_short (PyObject * obj, short *val)
 {
   long v;
   int res = SWIG_AsVal_long (obj, &v);
   if (SWIG_IsOK(res)) {
-    if ((v < INT_MIN || v > INT_MAX)) {
+    if ((v < SHRT_MIN || v > SHRT_MAX)) {
       return SWIG_OverflowError;
     } else {
-      if (val) *val = (int)(v);
+      if (val) *val = (short)(v);
     }
   }  
   return res;
@@ -2649,7 +2630,7 @@ SWIG_AsVal_int (PyObject * obj, int *val)
 
 
 SWIGINTERNINLINE PyObject *
-SWIG_From_int  (int value)
+SWIG_From_short  (short value)
 {    
   return SWIG_From_long  (value);
 }
@@ -2761,97 +2742,94 @@ SWIG_FromCharPtrAndSize(const char* carray, size_t size)
 }
 
 
+SWIGINTERN int
+SWIG_AsVal_unsigned_SS_long (PyObject *obj, unsigned long *val) 
+{
+  if (PyInt_Check(obj)) {
+    long v = PyInt_AsLong(obj);
+    if (v >= 0) {
+      if (val) *val = v;
+      return SWIG_OK;
+    } else {
+      return SWIG_OverflowError;
+    }
+  } else if (PyLong_Check(obj)) {
+    unsigned long v = PyLong_AsUnsignedLong(obj);
+    if (!PyErr_Occurred()) {
+      if (val) *val = v;
+      return SWIG_OK;
+    } else {
+      PyErr_Clear();
+    }
+  }
+#ifdef SWIG_PYTHON_CAST_MODE
+  {
+    int dispatch = 0;
+    unsigned long v = PyLong_AsUnsignedLong(obj);
+    if (!PyErr_Occurred()) {
+      if (val) *val = v;
+      return SWIG_AddCast(SWIG_OK);
+    } else {
+      PyErr_Clear();
+    }
+    if (!dispatch) {
+      double d;
+      int res = SWIG_AddCast(SWIG_AsVal_double (obj,&d));
+      if (SWIG_IsOK(res) && SWIG_CanCastAsInteger(&d, 0, ULONG_MAX)) {
+	if (val) *val = (unsigned long)(d);
+	return res;
+      }
+    }
+  }
+#endif
+  return SWIG_TypeError;
+}
+
+
+SWIGINTERNINLINE PyObject* 
+SWIG_From_unsigned_SS_long  (unsigned long value)
+{
+  return (value > LONG_MAX) ?
+    PyLong_FromUnsignedLong(value) : PyInt_FromLong((long)(value)); 
+}
+
+
+
+
+
 SWIGINTERNINLINE PyObject * 
 SWIG_FromCharPtr(const char *cptr)
 { 
   return SWIG_FromCharPtrAndSize(cptr, (cptr ? strlen(cptr) : 0));
 }
 
-
-
-
 #ifdef __cplusplus
 extern "C" {
 #endif
-SWIGINTERN PyObject *_wrap_new_intp(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_KRNET_API_verbose_set(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
-  int *result = 0 ;
-  
-  if (!PyArg_ParseTuple(args,(char *)":new_intp")) SWIG_fail;
-  result = (int *)new_intp();
-  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_int, 0 |  0 );
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_copy_intp(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
-  PyObject *resultobj = 0;
-  int arg1 ;
-  int *result = 0 ;
-  int val1 ;
-  int ecode1 = 0 ;
-  PyObject * obj0 = 0 ;
-  
-  if (!PyArg_ParseTuple(args,(char *)"O:copy_intp",&obj0)) SWIG_fail;
-  ecode1 = SWIG_AsVal_int(obj0, &val1);
-  if (!SWIG_IsOK(ecode1)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "copy_intp" "', argument " "1"" of type '" "int""'");
-  } 
-  arg1 = (int)(val1);
-  result = (int *)copy_intp(arg1);
-  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_int, 0 |  0 );
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_delete_intp(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
-  PyObject *resultobj = 0;
-  int *arg1 = (int *) 0 ;
+  KRNET_API *arg1 = (KRNET_API *) 0 ;
+  short arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  PyObject * obj0 = 0 ;
-  
-  if (!PyArg_ParseTuple(args,(char *)"O:delete_intp",&obj0)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_int, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_intp" "', argument " "1"" of type '" "int *""'"); 
-  }
-  arg1 = (int *)(argp1);
-  delete_intp(arg1);
-  resultobj = SWIG_Py_Void();
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_intp_assign(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
-  PyObject *resultobj = 0;
-  int *arg1 = (int *) 0 ;
-  int arg2 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  int val2 ;
+  short val2 ;
   int ecode2 = 0 ;
   PyObject * obj0 = 0 ;
   PyObject * obj1 = 0 ;
   
-  if (!PyArg_ParseTuple(args,(char *)"OO:intp_assign",&obj0,&obj1)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_int, 0 |  0 );
+  if (!PyArg_ParseTuple(args,(char *)"OO:KRNET_API_verbose_set",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_KRNET_API, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "intp_assign" "', argument " "1"" of type '" "int *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "KRNET_API_verbose_set" "', argument " "1"" of type '" "KRNET_API *""'"); 
   }
-  arg1 = (int *)(argp1);
-  ecode2 = SWIG_AsVal_int(obj1, &val2);
+  arg1 = (KRNET_API *)(argp1);
+  ecode2 = SWIG_AsVal_short(obj1, &val2);
   if (!SWIG_IsOK(ecode2)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "intp_assign" "', argument " "2"" of type '" "int""'");
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "KRNET_API_verbose_set" "', argument " "2"" of type '" "short""'");
   } 
-  arg2 = (int)(val2);
-  intp_assign(arg1,arg2);
+  arg2 = (short)(val2);
+  if (arg1) (arg1)->verbose = arg2;
+  
   resultobj = SWIG_Py_Void();
   return resultobj;
 fail:
@@ -2859,52 +2837,950 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_intp_value(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_KRNET_API_verbose_get(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
-  int *arg1 = (int *) 0 ;
-  int result;
+  KRNET_API *arg1 = (KRNET_API *) 0 ;
+  short result;
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject * obj0 = 0 ;
   
-  if (!PyArg_ParseTuple(args,(char *)"O:intp_value",&obj0)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_int, 0 |  0 );
+  if (!PyArg_ParseTuple(args,(char *)"O:KRNET_API_verbose_get",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_KRNET_API, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "intp_value" "', argument " "1"" of type '" "int *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "KRNET_API_verbose_get" "', argument " "1"" of type '" "KRNET_API *""'"); 
   }
-  arg1 = (int *)(argp1);
-  result = (int)intp_value(arg1);
-  resultobj = SWIG_From_int((int)(result));
+  arg1 = (KRNET_API *)(argp1);
+  result = (short) ((arg1)->verbose);
+  resultobj = SWIG_From_short((short)(result));
   return resultobj;
 fail:
   return NULL;
 }
 
 
-SWIGINTERN int dberr_set(PyObject *_val) {
-  {
-    int res = SWIG_AsCharArray(_val, dberr, 1024);
-    if (!SWIG_IsOK(res)) {
-      SWIG_exception_fail(SWIG_ArgError(res), "in variable '""dberr""' of type '""char [1024]""'");
-    }
+SWIGINTERN PyObject *_wrap_KRNET_API_ip_set(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  KRNET_API *arg1 = (KRNET_API *) 0 ;
+  char *arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  char temp2[256] ;
+  int res2 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:KRNET_API_ip_set",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_KRNET_API, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "KRNET_API_ip_set" "', argument " "1"" of type '" "KRNET_API *""'"); 
   }
-  return 0;
+  arg1 = (KRNET_API *)(argp1);
+  res2 = SWIG_AsCharArray(obj1, temp2, 256);
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "KRNET_API_ip_set" "', argument " "2"" of type '" "char [256]""'");
+  }
+  arg2 = temp2;
+  if (arg2) memcpy(arg1->ip,arg2,256*sizeof(char));
+  else memset(arg1->ip,0,256*sizeof(char));
+  resultobj = SWIG_Py_Void();
+  return resultobj;
 fail:
-  return 1;
+  return NULL;
 }
 
 
-SWIGINTERN PyObject *dberr_get(void) {
-  PyObject *pyobj = 0;
+SWIGINTERN PyObject *_wrap_KRNET_API_ip_get(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  KRNET_API *arg1 = (KRNET_API *) 0 ;
+  char *result = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
   
-  size_t size = 1024;
-  
-  while (size && (dberr[size - 1] == '\0')) --size;
-  
-  pyobj = SWIG_FromCharPtrAndSize(dberr, size);
-  return pyobj;
+  if (!PyArg_ParseTuple(args,(char *)"O:KRNET_API_ip_get",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_KRNET_API, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "KRNET_API_ip_get" "', argument " "1"" of type '" "KRNET_API *""'"); 
+  }
+  arg1 = (KRNET_API *)(argp1);
+  result = (char *)(char *) ((arg1)->ip);
+  {
+    size_t size = 256;
+    
+    while (size && (result[size - 1] == '\0')) --size;
+    
+    resultobj = SWIG_FromCharPtrAndSize(result, size);
+  }
+  return resultobj;
+fail:
+  return NULL;
 }
 
+
+SWIGINTERN PyObject *_wrap_KRNET_API_netmask_set(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  KRNET_API *arg1 = (KRNET_API *) 0 ;
+  unsigned long arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  unsigned long val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:KRNET_API_netmask_set",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_KRNET_API, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "KRNET_API_netmask_set" "', argument " "1"" of type '" "KRNET_API *""'"); 
+  }
+  arg1 = (KRNET_API *)(argp1);
+  ecode2 = SWIG_AsVal_unsigned_SS_long(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "KRNET_API_netmask_set" "', argument " "2"" of type '" "unsigned long""'");
+  } 
+  arg2 = (unsigned long)(val2);
+  if (arg1) (arg1)->netmask = arg2;
+  
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_KRNET_API_netmask_get(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  KRNET_API *arg1 = (KRNET_API *) 0 ;
+  unsigned long result;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:KRNET_API_netmask_get",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_KRNET_API, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "KRNET_API_netmask_get" "', argument " "1"" of type '" "KRNET_API *""'"); 
+  }
+  arg1 = (KRNET_API *)(argp1);
+  result = (unsigned long) ((arg1)->netmask);
+  resultobj = SWIG_From_unsigned_SS_long((unsigned long)(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_KRNET_API_start_set(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  KRNET_API *arg1 = (KRNET_API *) 0 ;
+  unsigned long arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  unsigned long val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:KRNET_API_start_set",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_KRNET_API, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "KRNET_API_start_set" "', argument " "1"" of type '" "KRNET_API *""'"); 
+  }
+  arg1 = (KRNET_API *)(argp1);
+  ecode2 = SWIG_AsVal_unsigned_SS_long(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "KRNET_API_start_set" "', argument " "2"" of type '" "unsigned long""'");
+  } 
+  arg2 = (unsigned long)(val2);
+  if (arg1) (arg1)->start = arg2;
+  
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_KRNET_API_start_get(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  KRNET_API *arg1 = (KRNET_API *) 0 ;
+  unsigned long result;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:KRNET_API_start_get",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_KRNET_API, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "KRNET_API_start_get" "', argument " "1"" of type '" "KRNET_API *""'"); 
+  }
+  arg1 = (KRNET_API *)(argp1);
+  result = (unsigned long) ((arg1)->start);
+  resultobj = SWIG_From_unsigned_SS_long((unsigned long)(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_KRNET_API_end_set(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  KRNET_API *arg1 = (KRNET_API *) 0 ;
+  unsigned long arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  unsigned long val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:KRNET_API_end_set",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_KRNET_API, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "KRNET_API_end_set" "', argument " "1"" of type '" "KRNET_API *""'"); 
+  }
+  arg1 = (KRNET_API *)(argp1);
+  ecode2 = SWIG_AsVal_unsigned_SS_long(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "KRNET_API_end_set" "', argument " "2"" of type '" "unsigned long""'");
+  } 
+  arg2 = (unsigned long)(val2);
+  if (arg1) (arg1)->end = arg2;
+  
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_KRNET_API_end_get(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  KRNET_API *arg1 = (KRNET_API *) 0 ;
+  unsigned long result;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:KRNET_API_end_get",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_KRNET_API, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "KRNET_API_end_get" "', argument " "1"" of type '" "KRNET_API *""'"); 
+  }
+  arg1 = (KRNET_API *)(argp1);
+  result = (unsigned long) ((arg1)->end);
+  resultobj = SWIG_From_unsigned_SS_long((unsigned long)(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_KRNET_API_icode_set(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  KRNET_API *arg1 = (KRNET_API *) 0 ;
+  char *arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  char temp2[64] ;
+  int res2 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:KRNET_API_icode_set",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_KRNET_API, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "KRNET_API_icode_set" "', argument " "1"" of type '" "KRNET_API *""'"); 
+  }
+  arg1 = (KRNET_API *)(argp1);
+  res2 = SWIG_AsCharArray(obj1, temp2, 64);
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "KRNET_API_icode_set" "', argument " "2"" of type '" "char [64]""'");
+  }
+  arg2 = temp2;
+  if (arg2) memcpy(arg1->icode,arg2,64*sizeof(char));
+  else memset(arg1->icode,0,64*sizeof(char));
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_KRNET_API_icode_get(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  KRNET_API *arg1 = (KRNET_API *) 0 ;
+  char *result = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:KRNET_API_icode_get",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_KRNET_API, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "KRNET_API_icode_get" "', argument " "1"" of type '" "KRNET_API *""'"); 
+  }
+  arg1 = (KRNET_API *)(argp1);
+  result = (char *)(char *) ((arg1)->icode);
+  {
+    size_t size = 64;
+    
+    while (size && (result[size - 1] == '\0')) --size;
+    
+    resultobj = SWIG_FromCharPtrAndSize(result, size);
+  }
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_KRNET_API_iname_set(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  KRNET_API *arg1 = (KRNET_API *) 0 ;
+  char *arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  char temp2[64] ;
+  int res2 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:KRNET_API_iname_set",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_KRNET_API, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "KRNET_API_iname_set" "', argument " "1"" of type '" "KRNET_API *""'"); 
+  }
+  arg1 = (KRNET_API *)(argp1);
+  res2 = SWIG_AsCharArray(obj1, temp2, 64);
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "KRNET_API_iname_set" "', argument " "2"" of type '" "char [64]""'");
+  }
+  arg2 = temp2;
+  if (arg2) memcpy(arg1->iname,arg2,64*sizeof(char));
+  else memset(arg1->iname,0,64*sizeof(char));
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_KRNET_API_iname_get(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  KRNET_API *arg1 = (KRNET_API *) 0 ;
+  char *result = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:KRNET_API_iname_get",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_KRNET_API, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "KRNET_API_iname_get" "', argument " "1"" of type '" "KRNET_API *""'"); 
+  }
+  arg1 = (KRNET_API *)(argp1);
+  result = (char *)(char *) ((arg1)->iname);
+  {
+    size_t size = 64;
+    
+    while (size && (result[size - 1] == '\0')) --size;
+    
+    resultobj = SWIG_FromCharPtrAndSize(result, size);
+  }
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_KRNET_API_ccode_set(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  KRNET_API *arg1 = (KRNET_API *) 0 ;
+  char *arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  char temp2[4] ;
+  int res2 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:KRNET_API_ccode_set",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_KRNET_API, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "KRNET_API_ccode_set" "', argument " "1"" of type '" "KRNET_API *""'"); 
+  }
+  arg1 = (KRNET_API *)(argp1);
+  res2 = SWIG_AsCharArray(obj1, temp2, 4);
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "KRNET_API_ccode_set" "', argument " "2"" of type '" "char [4]""'");
+  }
+  arg2 = temp2;
+  if (arg2) memcpy(arg1->ccode,arg2,4*sizeof(char));
+  else memset(arg1->ccode,0,4*sizeof(char));
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_KRNET_API_ccode_get(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  KRNET_API *arg1 = (KRNET_API *) 0 ;
+  char *result = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:KRNET_API_ccode_get",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_KRNET_API, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "KRNET_API_ccode_get" "', argument " "1"" of type '" "KRNET_API *""'"); 
+  }
+  arg1 = (KRNET_API *)(argp1);
+  result = (char *)(char *) ((arg1)->ccode);
+  {
+    size_t size = 4;
+    
+    while (size && (result[size - 1] == '\0')) --size;
+    
+    resultobj = SWIG_FromCharPtrAndSize(result, size);
+  }
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_KRNET_API_cname_set(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  KRNET_API *arg1 = (KRNET_API *) 0 ;
+  char *arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  char temp2[64] ;
+  int res2 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:KRNET_API_cname_set",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_KRNET_API, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "KRNET_API_cname_set" "', argument " "1"" of type '" "KRNET_API *""'"); 
+  }
+  arg1 = (KRNET_API *)(argp1);
+  res2 = SWIG_AsCharArray(obj1, temp2, 64);
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "KRNET_API_cname_set" "', argument " "2"" of type '" "char [64]""'");
+  }
+  arg2 = temp2;
+  if (arg2) memcpy(arg1->cname,arg2,64*sizeof(char));
+  else memset(arg1->cname,0,64*sizeof(char));
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_KRNET_API_cname_get(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  KRNET_API *arg1 = (KRNET_API *) 0 ;
+  char *result = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:KRNET_API_cname_get",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_KRNET_API, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "KRNET_API_cname_get" "', argument " "1"" of type '" "KRNET_API *""'"); 
+  }
+  arg1 = (KRNET_API *)(argp1);
+  result = (char *)(char *) ((arg1)->cname);
+  {
+    size_t size = 64;
+    
+    while (size && (result[size - 1] == '\0')) --size;
+    
+    resultobj = SWIG_FromCharPtrAndSize(result, size);
+  }
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_new_KRNET_API(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  KRNET_API *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)":new_KRNET_API")) SWIG_fail;
+  result = (KRNET_API *)(KRNET_API *) calloc(1, sizeof(KRNET_API));
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_KRNET_API, SWIG_POINTER_NEW |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_delete_KRNET_API(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  KRNET_API *arg1 = (KRNET_API *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:delete_KRNET_API",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_KRNET_API, SWIG_POINTER_DISOWN |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_KRNET_API" "', argument " "1"" of type '" "KRNET_API *""'"); 
+  }
+  arg1 = (KRNET_API *)(argp1);
+  free((char *) arg1);
+  
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *KRNET_API_swigregister(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *obj;
+  if (!PyArg_ParseTuple(args,(char*)"O|swigregister", &obj)) return NULL;
+  SWIG_TypeNewClientData(SWIGTYPE_p_KRNET_API, SWIG_NewClientData(obj));
+  return SWIG_Py_Void();
+}
+
+SWIGINTERN PyObject *_wrap_KRNET_API_EX_verbose_set(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  KRNET_API_EX *arg1 = (KRNET_API_EX *) 0 ;
+  short arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  short val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:KRNET_API_EX_verbose_set",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_KRNET_API_EX, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "KRNET_API_EX_verbose_set" "', argument " "1"" of type '" "KRNET_API_EX *""'"); 
+  }
+  arg1 = (KRNET_API_EX *)(argp1);
+  ecode2 = SWIG_AsVal_short(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "KRNET_API_EX_verbose_set" "', argument " "2"" of type '" "short""'");
+  } 
+  arg2 = (short)(val2);
+  if (arg1) (arg1)->verbose = arg2;
+  
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_KRNET_API_EX_verbose_get(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  KRNET_API_EX *arg1 = (KRNET_API_EX *) 0 ;
+  short result;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:KRNET_API_EX_verbose_get",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_KRNET_API_EX, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "KRNET_API_EX_verbose_get" "', argument " "1"" of type '" "KRNET_API_EX *""'"); 
+  }
+  arg1 = (KRNET_API_EX *)(argp1);
+  result = (short) ((arg1)->verbose);
+  resultobj = SWIG_From_short((short)(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_KRNET_API_EX_ip_set(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  KRNET_API_EX *arg1 = (KRNET_API_EX *) 0 ;
+  char *arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  char temp2[16] ;
+  int res2 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:KRNET_API_EX_ip_set",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_KRNET_API_EX, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "KRNET_API_EX_ip_set" "', argument " "1"" of type '" "KRNET_API_EX *""'"); 
+  }
+  arg1 = (KRNET_API_EX *)(argp1);
+  res2 = SWIG_AsCharArray(obj1, temp2, 16);
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "KRNET_API_EX_ip_set" "', argument " "2"" of type '" "char [16]""'");
+  }
+  arg2 = temp2;
+  if (arg2) memcpy(arg1->ip,arg2,16*sizeof(char));
+  else memset(arg1->ip,0,16*sizeof(char));
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_KRNET_API_EX_ip_get(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  KRNET_API_EX *arg1 = (KRNET_API_EX *) 0 ;
+  char *result = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:KRNET_API_EX_ip_get",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_KRNET_API_EX, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "KRNET_API_EX_ip_get" "', argument " "1"" of type '" "KRNET_API_EX *""'"); 
+  }
+  arg1 = (KRNET_API_EX *)(argp1);
+  result = (char *)(char *) ((arg1)->ip);
+  {
+    size_t size = 16;
+    
+    while (size && (result[size - 1] == '\0')) --size;
+    
+    resultobj = SWIG_FromCharPtrAndSize(result, size);
+  }
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_KRNET_API_EX_start_set(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  KRNET_API_EX *arg1 = (KRNET_API_EX *) 0 ;
+  ulong arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  unsigned long val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:KRNET_API_EX_start_set",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_KRNET_API_EX, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "KRNET_API_EX_start_set" "', argument " "1"" of type '" "KRNET_API_EX *""'"); 
+  }
+  arg1 = (KRNET_API_EX *)(argp1);
+  ecode2 = SWIG_AsVal_unsigned_SS_long(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "KRNET_API_EX_start_set" "', argument " "2"" of type '" "ulong""'");
+  } 
+  arg2 = (ulong)(val2);
+  if (arg1) (arg1)->start = arg2;
+  
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_KRNET_API_EX_start_get(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  KRNET_API_EX *arg1 = (KRNET_API_EX *) 0 ;
+  ulong result;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:KRNET_API_EX_start_get",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_KRNET_API_EX, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "KRNET_API_EX_start_get" "', argument " "1"" of type '" "KRNET_API_EX *""'"); 
+  }
+  arg1 = (KRNET_API_EX *)(argp1);
+  result = (ulong) ((arg1)->start);
+  resultobj = SWIG_From_unsigned_SS_long((unsigned long)(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_KRNET_API_EX_end_set(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  KRNET_API_EX *arg1 = (KRNET_API_EX *) 0 ;
+  ulong arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  unsigned long val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:KRNET_API_EX_end_set",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_KRNET_API_EX, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "KRNET_API_EX_end_set" "', argument " "1"" of type '" "KRNET_API_EX *""'"); 
+  }
+  arg1 = (KRNET_API_EX *)(argp1);
+  ecode2 = SWIG_AsVal_unsigned_SS_long(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "KRNET_API_EX_end_set" "', argument " "2"" of type '" "ulong""'");
+  } 
+  arg2 = (ulong)(val2);
+  if (arg1) (arg1)->end = arg2;
+  
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_KRNET_API_EX_end_get(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  KRNET_API_EX *arg1 = (KRNET_API_EX *) 0 ;
+  ulong result;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:KRNET_API_EX_end_get",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_KRNET_API_EX, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "KRNET_API_EX_end_get" "', argument " "1"" of type '" "KRNET_API_EX *""'"); 
+  }
+  arg1 = (KRNET_API_EX *)(argp1);
+  result = (ulong) ((arg1)->end);
+  resultobj = SWIG_From_unsigned_SS_long((unsigned long)(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_KRNET_API_EX_size_set(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  KRNET_API_EX *arg1 = (KRNET_API_EX *) 0 ;
+  short arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  short val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:KRNET_API_EX_size_set",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_KRNET_API_EX, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "KRNET_API_EX_size_set" "', argument " "1"" of type '" "KRNET_API_EX *""'"); 
+  }
+  arg1 = (KRNET_API_EX *)(argp1);
+  ecode2 = SWIG_AsVal_short(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "KRNET_API_EX_size_set" "', argument " "2"" of type '" "short""'");
+  } 
+  arg2 = (short)(val2);
+  if (arg1) (arg1)->size = arg2;
+  
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_KRNET_API_EX_size_get(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  KRNET_API_EX *arg1 = (KRNET_API_EX *) 0 ;
+  short result;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:KRNET_API_EX_size_get",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_KRNET_API_EX, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "KRNET_API_EX_size_get" "', argument " "1"" of type '" "KRNET_API_EX *""'"); 
+  }
+  arg1 = (KRNET_API_EX *)(argp1);
+  result = (short) ((arg1)->size);
+  resultobj = SWIG_From_short((short)(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_KRNET_API_EX_dummy_set(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  KRNET_API_EX *arg1 = (KRNET_API_EX *) 0 ;
+  char **arg2 = (char **) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:KRNET_API_EX_dummy_set",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_KRNET_API_EX, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "KRNET_API_EX_dummy_set" "', argument " "1"" of type '" "KRNET_API_EX *""'"); 
+  }
+  arg1 = (KRNET_API_EX *)(argp1);
+  res2 = SWIG_ConvertPtr(obj1, &argp2,SWIGTYPE_p_p_char, 0 |  0 );
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "KRNET_API_EX_dummy_set" "', argument " "2"" of type '" "char **""'"); 
+  }
+  arg2 = (char **)(argp2);
+  if (arg1) (arg1)->dummy = arg2;
+  
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_KRNET_API_EX_dummy_get(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  KRNET_API_EX *arg1 = (KRNET_API_EX *) 0 ;
+  char **result = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:KRNET_API_EX_dummy_get",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_KRNET_API_EX, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "KRNET_API_EX_dummy_get" "', argument " "1"" of type '" "KRNET_API_EX *""'"); 
+  }
+  arg1 = (KRNET_API_EX *)(argp1);
+  result = (char **) ((arg1)->dummy);
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_p_char, 0 |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_KRNET_API_EX_dummydata_set(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  KRNET_API_EX *arg1 = (KRNET_API_EX *) 0 ;
+  char *arg2 = (char *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 ;
+  char *buf2 = 0 ;
+  int alloc2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:KRNET_API_EX_dummydata_set",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_KRNET_API_EX, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "KRNET_API_EX_dummydata_set" "', argument " "1"" of type '" "KRNET_API_EX *""'"); 
+  }
+  arg1 = (KRNET_API_EX *)(argp1);
+  res2 = SWIG_AsCharPtrAndSize(obj1, &buf2, NULL, &alloc2);
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "KRNET_API_EX_dummydata_set" "', argument " "2"" of type '" "char *""'");
+  }
+  arg2 = buf2;
+  if (arg1->dummydata) free((char*)arg1->dummydata);
+  if (arg2) {
+    size_t size = strlen(arg2) + 1;
+    arg1->dummydata = (char *)memcpy((char *)malloc((size)*sizeof(char)), arg2, sizeof(char)*(size));
+  } else {
+    arg1->dummydata = 0;
+  }
+  resultobj = SWIG_Py_Void();
+  if (alloc2 == SWIG_NEWOBJ) free((char*)buf2);
+  return resultobj;
+fail:
+  if (alloc2 == SWIG_NEWOBJ) free((char*)buf2);
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_KRNET_API_EX_dummydata_get(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  KRNET_API_EX *arg1 = (KRNET_API_EX *) 0 ;
+  char *result = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:KRNET_API_EX_dummydata_get",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_KRNET_API_EX, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "KRNET_API_EX_dummydata_get" "', argument " "1"" of type '" "KRNET_API_EX *""'"); 
+  }
+  arg1 = (KRNET_API_EX *)(argp1);
+  result = (char *) ((arg1)->dummydata);
+  resultobj = SWIG_FromCharPtr(result);
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_new_KRNET_API_EX(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  KRNET_API_EX *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)":new_KRNET_API_EX")) SWIG_fail;
+  result = (KRNET_API_EX *)(KRNET_API_EX *) calloc(1, sizeof(KRNET_API_EX));
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_KRNET_API_EX, SWIG_POINTER_NEW |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_delete_KRNET_API_EX(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  KRNET_API_EX *arg1 = (KRNET_API_EX *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:delete_KRNET_API_EX",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_KRNET_API_EX, SWIG_POINTER_DISOWN |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_KRNET_API_EX" "', argument " "1"" of type '" "KRNET_API_EX *""'"); 
+  }
+  arg1 = (KRNET_API_EX *)(argp1);
+  free((char *) arg1);
+  
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *KRNET_API_EX_swigregister(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *obj;
+  if (!PyArg_ParseTuple(args,(char*)"O|swigregister", &obj)) return NULL;
+  SWIG_TypeNewClientData(SWIGTYPE_p_KRNET_API_EX, SWIG_NewClientData(obj));
+  return SWIG_Py_Void();
+}
 
 SWIGINTERN PyObject *_wrap_version(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
@@ -2932,45 +3808,23 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_kerror(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
-  PyObject *resultobj = 0;
-  char *result = 0 ;
-  
-  if (!PyArg_ParseTuple(args,(char *)":kerror")) SWIG_fail;
-  result = (char *)kerror();
-  resultobj = SWIG_FromCharPtr(result);
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_krisp_open(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_open(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   char *arg1 = (char *) 0 ;
-  int arg2 ;
-  int *result = 0 ;
+  KR_API *result = 0 ;
   int res1 ;
   char *buf1 = 0 ;
   int alloc1 = 0 ;
-  int val2 ;
-  int ecode2 = 0 ;
   PyObject * obj0 = 0 ;
-  PyObject * obj1 = 0 ;
   
-  if (!PyArg_ParseTuple(args,(char *)"OO:krisp_open",&obj0,&obj1)) SWIG_fail;
+  if (!PyArg_ParseTuple(args,(char *)"O:open",&obj0)) SWIG_fail;
   res1 = SWIG_AsCharPtrAndSize(obj0, &buf1, NULL, &alloc1);
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "krisp_open" "', argument " "1"" of type '" "char *""'");
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "open" "', argument " "1"" of type '" "char *""'");
   }
   arg1 = buf1;
-  ecode2 = SWIG_AsVal_int(obj1, &val2);
-  if (!SWIG_IsOK(ecode2)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "krisp_open" "', argument " "2"" of type '" "int""'");
-  } 
-  arg2 = (int)(val2);
-  result = (int *)krisp_open(arg1,arg2);
-  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_int, 0 |  0 );
+  result = (KR_API *)open(arg1);
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_KR_API, 0 |  0 );
   if (alloc1 == SWIG_NEWOBJ) free((char*)buf1);
   return resultobj;
 fail:
@@ -2979,11 +3833,11 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_krisp_search(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_search(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
-  int *arg1 = (int *) 0 ;
+  KR_API *arg1 = (KR_API *) 0 ;
   char *arg2 = (char *) 0 ;
-  char *result = 0 ;
+  KRNET_API *result = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   int res2 ;
@@ -2992,19 +3846,19 @@ SWIGINTERN PyObject *_wrap_krisp_search(PyObject *SWIGUNUSEDPARM(self), PyObject
   PyObject * obj0 = 0 ;
   PyObject * obj1 = 0 ;
   
-  if (!PyArg_ParseTuple(args,(char *)"OO:krisp_search",&obj0,&obj1)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_int, 0 |  0 );
+  if (!PyArg_ParseTuple(args,(char *)"OO:search",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_KR_API, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "krisp_search" "', argument " "1"" of type '" "int *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "search" "', argument " "1"" of type '" "KR_API *""'"); 
   }
-  arg1 = (int *)(argp1);
+  arg1 = (KR_API *)(argp1);
   res2 = SWIG_AsCharPtrAndSize(obj1, &buf2, NULL, &alloc2);
   if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "krisp_search" "', argument " "2"" of type '" "char *""'");
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "search" "', argument " "2"" of type '" "char *""'");
   }
   arg2 = buf2;
-  result = (char *)krisp_search(arg1,arg2);
-  resultobj = SWIG_FromCharPtr(result);
+  result = (KRNET_API *)search(arg1,arg2);
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_KRNET_API, 0 |  0 );
   if (alloc2 == SWIG_NEWOBJ) free((char*)buf2);
   return resultobj;
 fail:
@@ -3013,20 +3867,66 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_krisp_close(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_search_ex(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
-  int *arg1 = (int *) 0 ;
+  KR_API *arg1 = (KR_API *) 0 ;
+  char *arg2 = (char *) 0 ;
+  char *arg3 = (char *) 0 ;
+  KRNET_API_EX *result = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 ;
+  char *buf2 = 0 ;
+  int alloc2 = 0 ;
+  int res3 ;
+  char *buf3 = 0 ;
+  int alloc3 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OOO:search_ex",&obj0,&obj1,&obj2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_KR_API, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "search_ex" "', argument " "1"" of type '" "KR_API *""'"); 
+  }
+  arg1 = (KR_API *)(argp1);
+  res2 = SWIG_AsCharPtrAndSize(obj1, &buf2, NULL, &alloc2);
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "search_ex" "', argument " "2"" of type '" "char *""'");
+  }
+  arg2 = buf2;
+  res3 = SWIG_AsCharPtrAndSize(obj2, &buf3, NULL, &alloc3);
+  if (!SWIG_IsOK(res3)) {
+    SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "search_ex" "', argument " "3"" of type '" "char *""'");
+  }
+  arg3 = buf3;
+  result = (KRNET_API_EX *)search_ex(arg1,arg2,arg3);
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_KRNET_API_EX, 0 |  0 );
+  if (alloc2 == SWIG_NEWOBJ) free((char*)buf2);
+  if (alloc3 == SWIG_NEWOBJ) free((char*)buf3);
+  return resultobj;
+fail:
+  if (alloc2 == SWIG_NEWOBJ) free((char*)buf2);
+  if (alloc3 == SWIG_NEWOBJ) free((char*)buf3);
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_free_search(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  KRNET_API *arg1 = (KRNET_API *) 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject * obj0 = 0 ;
   
-  if (!PyArg_ParseTuple(args,(char *)"O:krisp_close",&obj0)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_int, 0 |  0 );
+  if (!PyArg_ParseTuple(args,(char *)"O:free_search",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_KRNET_API, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "krisp_close" "', argument " "1"" of type '" "int *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "free_search" "', argument " "1"" of type '" "KRNET_API *""'"); 
   }
-  arg1 = (int *)(argp1);
-  krisp_close(arg1);
+  arg1 = (KRNET_API *)(argp1);
+  free_search(arg1);
   resultobj = SWIG_Py_Void();
   return resultobj;
 fail:
@@ -3034,38 +3934,299 @@ fail:
 }
 
 
+SWIGINTERN PyObject *_wrap_free_search_ex(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  KRNET_API_EX *arg1 = (KRNET_API_EX *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:free_search_ex",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_KRNET_API_EX, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "free_search_ex" "', argument " "1"" of type '" "KRNET_API_EX *""'"); 
+  }
+  arg1 = (KRNET_API_EX *)(argp1);
+  free_search_ex(arg1);
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_kclose(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  KR_API *arg1 = (KR_API *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:kclose",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_KR_API, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "kclose" "', argument " "1"" of type '" "KR_API *""'"); 
+  }
+  arg1 = (KR_API *)(argp1);
+  kclose(arg1);
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_kip2long(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  char *arg1 = (char *) 0 ;
+  ulong result;
+  int res1 ;
+  char *buf1 = 0 ;
+  int alloc1 = 0 ;
+  PyObject * obj0 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:kip2long",&obj0)) SWIG_fail;
+  res1 = SWIG_AsCharPtrAndSize(obj0, &buf1, NULL, &alloc1);
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "kip2long" "', argument " "1"" of type '" "char *""'");
+  }
+  arg1 = buf1;
+  result = (ulong)kip2long(arg1);
+  resultobj = SWIG_From_unsigned_SS_long((unsigned long)(result));
+  if (alloc1 == SWIG_NEWOBJ) free((char*)buf1);
+  return resultobj;
+fail:
+  if (alloc1 == SWIG_NEWOBJ) free((char*)buf1);
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_knetmask(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  ulong arg1 ;
+  ulong arg2 ;
+  ulong result;
+  unsigned long val1 ;
+  int ecode1 = 0 ;
+  unsigned long val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:knetmask",&obj0,&obj1)) SWIG_fail;
+  ecode1 = SWIG_AsVal_unsigned_SS_long(obj0, &val1);
+  if (!SWIG_IsOK(ecode1)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "knetmask" "', argument " "1"" of type '" "ulong""'");
+  } 
+  arg1 = (ulong)(val1);
+  ecode2 = SWIG_AsVal_unsigned_SS_long(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "knetmask" "', argument " "2"" of type '" "ulong""'");
+  } 
+  arg2 = (ulong)(val2);
+  result = (ulong)knetmask(arg1,arg2);
+  resultobj = SWIG_From_unsigned_SS_long((unsigned long)(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_knetwork(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  ulong arg1 ;
+  ulong arg2 ;
+  ulong result;
+  unsigned long val1 ;
+  int ecode1 = 0 ;
+  unsigned long val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:knetwork",&obj0,&obj1)) SWIG_fail;
+  ecode1 = SWIG_AsVal_unsigned_SS_long(obj0, &val1);
+  if (!SWIG_IsOK(ecode1)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "knetwork" "', argument " "1"" of type '" "ulong""'");
+  } 
+  arg1 = (ulong)(val1);
+  ecode2 = SWIG_AsVal_unsigned_SS_long(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "knetwork" "', argument " "2"" of type '" "ulong""'");
+  } 
+  arg2 = (ulong)(val2);
+  result = (ulong)knetwork(arg1,arg2);
+  resultobj = SWIG_From_unsigned_SS_long((unsigned long)(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_kbroadcast(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  ulong arg1 ;
+  ulong arg2 ;
+  ulong result;
+  unsigned long val1 ;
+  int ecode1 = 0 ;
+  unsigned long val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:kbroadcast",&obj0,&obj1)) SWIG_fail;
+  ecode1 = SWIG_AsVal_unsigned_SS_long(obj0, &val1);
+  if (!SWIG_IsOK(ecode1)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "kbroadcast" "', argument " "1"" of type '" "ulong""'");
+  } 
+  arg1 = (ulong)(val1);
+  ecode2 = SWIG_AsVal_unsigned_SS_long(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "kbroadcast" "', argument " "2"" of type '" "ulong""'");
+  } 
+  arg2 = (ulong)(val2);
+  result = (ulong)kbroadcast(arg1,arg2);
+  resultobj = SWIG_From_unsigned_SS_long((unsigned long)(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_kprefix2long(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  short arg1 ;
+  ulong result;
+  short val1 ;
+  int ecode1 = 0 ;
+  PyObject * obj0 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:kprefix2long",&obj0)) SWIG_fail;
+  ecode1 = SWIG_AsVal_short(obj0, &val1);
+  if (!SWIG_IsOK(ecode1)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "kprefix2long" "', argument " "1"" of type '" "short""'");
+  } 
+  arg1 = (short)(val1);
+  result = (ulong)kprefix2long(arg1);
+  resultobj = SWIG_From_unsigned_SS_long((unsigned long)(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_klong2prefix(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  ulong arg1 ;
+  short result;
+  unsigned long val1 ;
+  int ecode1 = 0 ;
+  PyObject * obj0 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:klong2prefix",&obj0)) SWIG_fail;
+  ecode1 = SWIG_AsVal_unsigned_SS_long(obj0, &val1);
+  if (!SWIG_IsOK(ecode1)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "klong2prefix" "', argument " "1"" of type '" "ulong""'");
+  } 
+  arg1 = (ulong)(val1);
+  result = (short)klong2prefix(arg1);
+  resultobj = SWIG_From_short((short)(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
 static PyMethodDef SwigMethods[] = {
-	 { (char *)"new_intp", _wrap_new_intp, METH_VARARGS, NULL},
-	 { (char *)"copy_intp", _wrap_copy_intp, METH_VARARGS, NULL},
-	 { (char *)"delete_intp", _wrap_delete_intp, METH_VARARGS, NULL},
-	 { (char *)"intp_assign", _wrap_intp_assign, METH_VARARGS, NULL},
-	 { (char *)"intp_value", _wrap_intp_value, METH_VARARGS, NULL},
+	 { (char *)"KRNET_API_verbose_set", _wrap_KRNET_API_verbose_set, METH_VARARGS, NULL},
+	 { (char *)"KRNET_API_verbose_get", _wrap_KRNET_API_verbose_get, METH_VARARGS, NULL},
+	 { (char *)"KRNET_API_ip_set", _wrap_KRNET_API_ip_set, METH_VARARGS, NULL},
+	 { (char *)"KRNET_API_ip_get", _wrap_KRNET_API_ip_get, METH_VARARGS, NULL},
+	 { (char *)"KRNET_API_netmask_set", _wrap_KRNET_API_netmask_set, METH_VARARGS, NULL},
+	 { (char *)"KRNET_API_netmask_get", _wrap_KRNET_API_netmask_get, METH_VARARGS, NULL},
+	 { (char *)"KRNET_API_start_set", _wrap_KRNET_API_start_set, METH_VARARGS, NULL},
+	 { (char *)"KRNET_API_start_get", _wrap_KRNET_API_start_get, METH_VARARGS, NULL},
+	 { (char *)"KRNET_API_end_set", _wrap_KRNET_API_end_set, METH_VARARGS, NULL},
+	 { (char *)"KRNET_API_end_get", _wrap_KRNET_API_end_get, METH_VARARGS, NULL},
+	 { (char *)"KRNET_API_icode_set", _wrap_KRNET_API_icode_set, METH_VARARGS, NULL},
+	 { (char *)"KRNET_API_icode_get", _wrap_KRNET_API_icode_get, METH_VARARGS, NULL},
+	 { (char *)"KRNET_API_iname_set", _wrap_KRNET_API_iname_set, METH_VARARGS, NULL},
+	 { (char *)"KRNET_API_iname_get", _wrap_KRNET_API_iname_get, METH_VARARGS, NULL},
+	 { (char *)"KRNET_API_ccode_set", _wrap_KRNET_API_ccode_set, METH_VARARGS, NULL},
+	 { (char *)"KRNET_API_ccode_get", _wrap_KRNET_API_ccode_get, METH_VARARGS, NULL},
+	 { (char *)"KRNET_API_cname_set", _wrap_KRNET_API_cname_set, METH_VARARGS, NULL},
+	 { (char *)"KRNET_API_cname_get", _wrap_KRNET_API_cname_get, METH_VARARGS, NULL},
+	 { (char *)"new_KRNET_API", _wrap_new_KRNET_API, METH_VARARGS, NULL},
+	 { (char *)"delete_KRNET_API", _wrap_delete_KRNET_API, METH_VARARGS, NULL},
+	 { (char *)"KRNET_API_swigregister", KRNET_API_swigregister, METH_VARARGS, NULL},
+	 { (char *)"KRNET_API_EX_verbose_set", _wrap_KRNET_API_EX_verbose_set, METH_VARARGS, NULL},
+	 { (char *)"KRNET_API_EX_verbose_get", _wrap_KRNET_API_EX_verbose_get, METH_VARARGS, NULL},
+	 { (char *)"KRNET_API_EX_ip_set", _wrap_KRNET_API_EX_ip_set, METH_VARARGS, NULL},
+	 { (char *)"KRNET_API_EX_ip_get", _wrap_KRNET_API_EX_ip_get, METH_VARARGS, NULL},
+	 { (char *)"KRNET_API_EX_start_set", _wrap_KRNET_API_EX_start_set, METH_VARARGS, NULL},
+	 { (char *)"KRNET_API_EX_start_get", _wrap_KRNET_API_EX_start_get, METH_VARARGS, NULL},
+	 { (char *)"KRNET_API_EX_end_set", _wrap_KRNET_API_EX_end_set, METH_VARARGS, NULL},
+	 { (char *)"KRNET_API_EX_end_get", _wrap_KRNET_API_EX_end_get, METH_VARARGS, NULL},
+	 { (char *)"KRNET_API_EX_size_set", _wrap_KRNET_API_EX_size_set, METH_VARARGS, NULL},
+	 { (char *)"KRNET_API_EX_size_get", _wrap_KRNET_API_EX_size_get, METH_VARARGS, NULL},
+	 { (char *)"KRNET_API_EX_dummy_set", _wrap_KRNET_API_EX_dummy_set, METH_VARARGS, NULL},
+	 { (char *)"KRNET_API_EX_dummy_get", _wrap_KRNET_API_EX_dummy_get, METH_VARARGS, NULL},
+	 { (char *)"KRNET_API_EX_dummydata_set", _wrap_KRNET_API_EX_dummydata_set, METH_VARARGS, NULL},
+	 { (char *)"KRNET_API_EX_dummydata_get", _wrap_KRNET_API_EX_dummydata_get, METH_VARARGS, NULL},
+	 { (char *)"new_KRNET_API_EX", _wrap_new_KRNET_API_EX, METH_VARARGS, NULL},
+	 { (char *)"delete_KRNET_API_EX", _wrap_delete_KRNET_API_EX, METH_VARARGS, NULL},
+	 { (char *)"KRNET_API_EX_swigregister", KRNET_API_EX_swigregister, METH_VARARGS, NULL},
 	 { (char *)"version", _wrap_version, METH_VARARGS, NULL},
 	 { (char *)"uversion", _wrap_uversion, METH_VARARGS, NULL},
-	 { (char *)"kerror", _wrap_kerror, METH_VARARGS, NULL},
-	 { (char *)"krisp_open", _wrap_krisp_open, METH_VARARGS, NULL},
-	 { (char *)"krisp_search", _wrap_krisp_search, METH_VARARGS, NULL},
-	 { (char *)"krisp_close", _wrap_krisp_close, METH_VARARGS, NULL},
+	 { (char *)"open", _wrap_open, METH_VARARGS, NULL},
+	 { (char *)"search", _wrap_search, METH_VARARGS, NULL},
+	 { (char *)"search_ex", _wrap_search_ex, METH_VARARGS, NULL},
+	 { (char *)"free_search", _wrap_free_search, METH_VARARGS, NULL},
+	 { (char *)"free_search_ex", _wrap_free_search_ex, METH_VARARGS, NULL},
+	 { (char *)"kclose", _wrap_kclose, METH_VARARGS, NULL},
+	 { (char *)"kip2long", _wrap_kip2long, METH_VARARGS, NULL},
+	 { (char *)"knetmask", _wrap_knetmask, METH_VARARGS, NULL},
+	 { (char *)"knetwork", _wrap_knetwork, METH_VARARGS, NULL},
+	 { (char *)"kbroadcast", _wrap_kbroadcast, METH_VARARGS, NULL},
+	 { (char *)"kprefix2long", _wrap_kprefix2long, METH_VARARGS, NULL},
+	 { (char *)"klong2prefix", _wrap_klong2prefix, METH_VARARGS, NULL},
 	 { NULL, NULL, 0, NULL }
 };
 
 
 /* -------- TYPE CONVERSION AND EQUIVALENCE RULES (BEGIN) -------- */
 
+static swig_type_info _swigt__p_KRNET_API = {"_p_KRNET_API", "KRNET_API *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_KRNET_API_EX = {"_p_KRNET_API_EX", "KRNET_API_EX *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_KR_API = {"_p_KR_API", "KR_API *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_char = {"_p_char", "char *", 0, 0, (void*)0, 0};
-static swig_type_info _swigt__p_int = {"_p_int", "int *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_p_char = {"_p_p_char", "char **", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_unsigned_long = {"_p_unsigned_long", "unsigned long *|ulong *", 0, 0, (void*)0, 0};
 
 static swig_type_info *swig_type_initial[] = {
+  &_swigt__p_KRNET_API,
+  &_swigt__p_KRNET_API_EX,
+  &_swigt__p_KR_API,
   &_swigt__p_char,
-  &_swigt__p_int,
+  &_swigt__p_p_char,
+  &_swigt__p_unsigned_long,
 };
 
+static swig_cast_info _swigc__p_KRNET_API[] = {  {&_swigt__p_KRNET_API, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_KRNET_API_EX[] = {  {&_swigt__p_KRNET_API_EX, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_KR_API[] = {  {&_swigt__p_KR_API, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_char[] = {  {&_swigt__p_char, 0, 0, 0},{0, 0, 0, 0}};
-static swig_cast_info _swigc__p_int[] = {  {&_swigt__p_int, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_p_char[] = {  {&_swigt__p_p_char, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_unsigned_long[] = {  {&_swigt__p_unsigned_long, 0, 0, 0},{0, 0, 0, 0}};
 
 static swig_cast_info *swig_cast_initial[] = {
+  _swigc__p_KRNET_API,
+  _swigc__p_KRNET_API_EX,
+  _swigc__p_KR_API,
   _swigc__p_char,
-  _swigc__p_int,
+  _swigc__p_p_char,
+  _swigc__p_unsigned_long,
 };
 
 
@@ -3569,7 +4730,5 @@ SWIGEXPORT void SWIG_init(void) {
   SWIG_InstallConstants(d,swig_const_table);
   
   
-  PyDict_SetItemString(d,(char*)"cvar", SWIG_globals());
-  SWIG_addvarlink(SWIG_globals(),(char*)"dberr",dberr_get, dberr_set);
 }
 
