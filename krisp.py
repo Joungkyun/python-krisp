@@ -48,12 +48,24 @@ class KRNET_API(_object):
     __swig_getmethods__ = {}
     __getattr__ = lambda self, name: _swig_getattr(self, KRNET_API, name)
     __repr__ = _swig_repr
-    __swig_setmethods__["verbose"] = _krisp.KRNET_API_verbose_set
-    __swig_getmethods__["verbose"] = _krisp.KRNET_API_verbose_get
-    if _newclass:verbose = property(_krisp.KRNET_API_verbose_get, _krisp.KRNET_API_verbose_set)
+    __swig_setmethods__["err"] = _krisp.KRNET_API_err_set
+    __swig_getmethods__["err"] = _krisp.KRNET_API_err_get
+    if _newclass:err = property(_krisp.KRNET_API_err_get, _krisp.KRNET_API_err_set)
     __swig_setmethods__["ip"] = _krisp.KRNET_API_ip_set
     __swig_getmethods__["ip"] = _krisp.KRNET_API_ip_get
     if _newclass:ip = property(_krisp.KRNET_API_ip_get, _krisp.KRNET_API_ip_set)
+    __swig_setmethods__["icode"] = _krisp.KRNET_API_icode_set
+    __swig_getmethods__["icode"] = _krisp.KRNET_API_icode_get
+    if _newclass:icode = property(_krisp.KRNET_API_icode_get, _krisp.KRNET_API_icode_set)
+    __swig_setmethods__["iname"] = _krisp.KRNET_API_iname_set
+    __swig_getmethods__["iname"] = _krisp.KRNET_API_iname_get
+    if _newclass:iname = property(_krisp.KRNET_API_iname_get, _krisp.KRNET_API_iname_set)
+    __swig_setmethods__["cname"] = _krisp.KRNET_API_cname_set
+    __swig_getmethods__["cname"] = _krisp.KRNET_API_cname_get
+    if _newclass:cname = property(_krisp.KRNET_API_cname_get, _krisp.KRNET_API_cname_set)
+    __swig_setmethods__["ccode"] = _krisp.KRNET_API_ccode_set
+    __swig_getmethods__["ccode"] = _krisp.KRNET_API_ccode_get
+    if _newclass:ccode = property(_krisp.KRNET_API_ccode_get, _krisp.KRNET_API_ccode_set)
     __swig_setmethods__["netmask"] = _krisp.KRNET_API_netmask_set
     __swig_getmethods__["netmask"] = _krisp.KRNET_API_netmask_get
     if _newclass:netmask = property(_krisp.KRNET_API_netmask_get, _krisp.KRNET_API_netmask_set)
@@ -63,18 +75,9 @@ class KRNET_API(_object):
     __swig_setmethods__["end"] = _krisp.KRNET_API_end_set
     __swig_getmethods__["end"] = _krisp.KRNET_API_end_get
     if _newclass:end = property(_krisp.KRNET_API_end_get, _krisp.KRNET_API_end_set)
-    __swig_setmethods__["icode"] = _krisp.KRNET_API_icode_set
-    __swig_getmethods__["icode"] = _krisp.KRNET_API_icode_get
-    if _newclass:icode = property(_krisp.KRNET_API_icode_get, _krisp.KRNET_API_icode_set)
-    __swig_setmethods__["iname"] = _krisp.KRNET_API_iname_set
-    __swig_getmethods__["iname"] = _krisp.KRNET_API_iname_get
-    if _newclass:iname = property(_krisp.KRNET_API_iname_get, _krisp.KRNET_API_iname_set)
-    __swig_setmethods__["ccode"] = _krisp.KRNET_API_ccode_set
-    __swig_getmethods__["ccode"] = _krisp.KRNET_API_ccode_get
-    if _newclass:ccode = property(_krisp.KRNET_API_ccode_get, _krisp.KRNET_API_ccode_set)
-    __swig_setmethods__["cname"] = _krisp.KRNET_API_cname_set
-    __swig_getmethods__["cname"] = _krisp.KRNET_API_cname_get
-    if _newclass:cname = property(_krisp.KRNET_API_cname_get, _krisp.KRNET_API_cname_set)
+    __swig_setmethods__["verbose"] = _krisp.KRNET_API_verbose_set
+    __swig_getmethods__["verbose"] = _krisp.KRNET_API_verbose_get
+    if _newclass:verbose = property(_krisp.KRNET_API_verbose_get, _krisp.KRNET_API_verbose_set)
     def __init__(self, *args): 
         this = _krisp.new_KRNET_API(*args)
         try: self.this.append(this)
@@ -90,27 +93,30 @@ class KRNET_API_EX(_object):
     __swig_getmethods__ = {}
     __getattr__ = lambda self, name: _swig_getattr(self, KRNET_API_EX, name)
     __repr__ = _swig_repr
-    __swig_setmethods__["verbose"] = _krisp.KRNET_API_EX_verbose_set
-    __swig_getmethods__["verbose"] = _krisp.KRNET_API_EX_verbose_get
-    if _newclass:verbose = property(_krisp.KRNET_API_EX_verbose_get, _krisp.KRNET_API_EX_verbose_set)
+    __swig_setmethods__["err"] = _krisp.KRNET_API_EX_err_set
+    __swig_getmethods__["err"] = _krisp.KRNET_API_EX_err_get
+    if _newclass:err = property(_krisp.KRNET_API_EX_err_get, _krisp.KRNET_API_EX_err_set)
     __swig_setmethods__["ip"] = _krisp.KRNET_API_EX_ip_set
     __swig_getmethods__["ip"] = _krisp.KRNET_API_EX_ip_get
     if _newclass:ip = property(_krisp.KRNET_API_EX_ip_get, _krisp.KRNET_API_EX_ip_set)
-    __swig_setmethods__["start"] = _krisp.KRNET_API_EX_start_set
-    __swig_getmethods__["start"] = _krisp.KRNET_API_EX_start_get
-    if _newclass:start = property(_krisp.KRNET_API_EX_start_get, _krisp.KRNET_API_EX_start_set)
-    __swig_setmethods__["end"] = _krisp.KRNET_API_EX_end_set
-    __swig_getmethods__["end"] = _krisp.KRNET_API_EX_end_get
-    if _newclass:end = property(_krisp.KRNET_API_EX_end_get, _krisp.KRNET_API_EX_end_set)
-    __swig_setmethods__["size"] = _krisp.KRNET_API_EX_size_set
-    __swig_getmethods__["size"] = _krisp.KRNET_API_EX_size_get
-    if _newclass:size = property(_krisp.KRNET_API_EX_size_get, _krisp.KRNET_API_EX_size_set)
     __swig_setmethods__["dummy"] = _krisp.KRNET_API_EX_dummy_set
     __swig_getmethods__["dummy"] = _krisp.KRNET_API_EX_dummy_get
     if _newclass:dummy = property(_krisp.KRNET_API_EX_dummy_get, _krisp.KRNET_API_EX_dummy_set)
     __swig_setmethods__["dummydata"] = _krisp.KRNET_API_EX_dummydata_set
     __swig_getmethods__["dummydata"] = _krisp.KRNET_API_EX_dummydata_get
     if _newclass:dummydata = property(_krisp.KRNET_API_EX_dummydata_get, _krisp.KRNET_API_EX_dummydata_set)
+    __swig_setmethods__["start"] = _krisp.KRNET_API_EX_start_set
+    __swig_getmethods__["start"] = _krisp.KRNET_API_EX_start_get
+    if _newclass:start = property(_krisp.KRNET_API_EX_start_get, _krisp.KRNET_API_EX_start_set)
+    __swig_setmethods__["end"] = _krisp.KRNET_API_EX_end_set
+    __swig_getmethods__["end"] = _krisp.KRNET_API_EX_end_get
+    if _newclass:end = property(_krisp.KRNET_API_EX_end_get, _krisp.KRNET_API_EX_end_set)
+    __swig_setmethods__["verbose"] = _krisp.KRNET_API_EX_verbose_set
+    __swig_getmethods__["verbose"] = _krisp.KRNET_API_EX_verbose_get
+    if _newclass:verbose = property(_krisp.KRNET_API_EX_verbose_get, _krisp.KRNET_API_EX_verbose_set)
+    __swig_setmethods__["size"] = _krisp.KRNET_API_EX_size_set
+    __swig_getmethods__["size"] = _krisp.KRNET_API_EX_size_get
+    if _newclass:size = property(_krisp.KRNET_API_EX_size_get, _krisp.KRNET_API_EX_size_set)
     def __init__(self, *args): 
         this = _krisp.new_KRNET_API_EX(*args)
         try: self.this.append(this)
@@ -131,6 +137,9 @@ broadcast = _krisp.kbroadcast
 prefix2long = _krisp.kprefix2long
 long2prefix = _krisp.klong2prefix
 
+
+
+# $Id: krisp.py,v 1.4 2010-06-20 18:20:17 oops Exp $
 
 def modversion () :
 	return '2.0.0'
@@ -161,9 +170,9 @@ keys_ex = [
 		'ip', 'start', 'end', 'size', 'dummydata',
 ]
 
-def search (db, host, err = []) :
+def search (db, host, err = [ 'err' ]) :
 	r = _krisp.search (db, host)
-	if ( r == None ) :
+	if ( r.err ) :
 		err[0] = deepcopy (r.err)
 		return None
 
@@ -187,9 +196,9 @@ def search (db, host, err = []) :
 
 import re
 
-def search_ex (db, host, table, err = []) :
+def search_ex (db, host, table, err) :
 	r = _krisp.search_ex (db, host, table)
-	if ( r == None ) :
+	if ( r.err ) :
 		err[0] = deepcopy (r.err)
 		return None
 
