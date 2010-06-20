@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-# $Id: test.py,v 1.3 2010-06-20 06:09:44 oops Exp $
+# $Id: test.py,v 1.4 2010-06-20 18:20:17 oops Exp $
 
 import sys
 import os
@@ -10,7 +10,7 @@ import pickle
 try:
 	import krisp
 except ImportError:
-	sys.path.append (os.getcwd() + '/build/lib.linux-i686-2.5');
+	sys.path.append (os.getcwd() + '/build/lib.linux-i686-2.5')
 	import krisp
 
 print "krisp module version  : %s" % krisp.modversion ()
@@ -31,10 +31,10 @@ search_host = [ 'cnn.com', 'kornet.net', 'google.com' ]
 
 for host in search_host :
 	# init error message variable
-	err = []
 	print '%-10s : ' % host,
 
-	r = krisp.search (p, host, err);
+	err = [ '' ]
+	r = krisp.search (p, host, err)
 	if not r :
 		print err[0]
 		continue
@@ -51,10 +51,10 @@ print '** SEARCH_EX test'
 print
 
 for host in search_host :
-	err = [];
 	print '%-10s : ' % host,
 
-	r = krisp.search_ex (p, host, 'krisp', err);
+	err = [ '' ]
+	r = krisp.search_ex (p, host, 'krisp', err)
 	if not r :
 		print err[0]
 		continue
@@ -73,10 +73,10 @@ print 'LONG -> IP : %u -> %s' % (long, krisp.long2ip (long))
 
 start = '192.168.10.51'
 end   = '192.168.10.121'
-mask  = krisp.netmask (krisp.ip2long (start), krisp.ip2long (end));
-prefix = krisp.long2prefix (mask);
+mask  = krisp.netmask (krisp.ip2long (start), krisp.ip2long (end))
+prefix = krisp.long2prefix (mask)
 print 'RANGE      : %s - %s => mask %s (/%d)' % (start, end, krisp.long2ip (mask), prefix)
-print '             network  : %s' % krisp.long2ip (krisp.network (krisp.ip2long (start), mask));
-print '             broadcast: %s' % krisp.long2ip (krisp.broadcast (krisp.ip2long (start), mask));
+print '             network  : %s' % krisp.long2ip (krisp.network (krisp.ip2long (start), mask))
+print '             broadcast: %s' % krisp.long2ip (krisp.broadcast (krisp.ip2long (start), mask))
 
 sys.exit (0)

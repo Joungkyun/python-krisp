@@ -1,5 +1,5 @@
 /*
- * $Id: krisp.c,v 1.2 2010-06-20 05:59:50 oops Exp $
+ * $Id: krisp.c,v 1.3 2010-06-20 18:20:17 oops Exp $
  */
 
 #include <stdio.h>
@@ -43,10 +43,11 @@ KRNET_API * search (KR_API *db, char *host) { // {{{
 	SAFECPY_256 (isp->ip, host);
 	isp->verbose = 0;
 
-	if ( kr_search (isp, db) ) {
-		SAFECPY_1024 (isp->err, db->err);
+	/*
+	if ( kr_search (isp, db) )
 		return NULL;
-	}
+	*/
+	kr_search (isp, db);
 
 	return isp;
 } // }}}
@@ -67,8 +68,8 @@ KRNET_API_EX * search_ex (KR_API *db, char *host, char *table) { // {{{
 
 	db->table = table;
 	if ( kr_search_ex (isp, db) ) {
-		SAFECPY_1024 (isp->err, db->err);
-		return NULL;
+		return isp;
+		//return NULL;
 	}
 
 	for ( i=0; i<isp->size - 1; i++ ) {

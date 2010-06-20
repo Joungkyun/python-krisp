@@ -7,25 +7,27 @@
 typedef unsigned long int ulong;
 
 typedef struct {
-	short			verbose;
-	char			ip[256];
-	unsigned long	netmask;
-	unsigned long	start;
-	unsigned long	end;
-	char			icode[64];
-	char			iname[64];
-	char			ccode[4];
-	char			cname[64];
+	char    err[1024];
+	char    ip[256];
+	char    icode[64];
+	char    iname[64];
+	char    cname[64];
+	char    ccode[4];
+	ulong   netmask;
+	ulong   start;
+	ulong   end;
+	bool    verbose;
 } KRNET_API;
 
 typedef struct {
-    short           verbose;
-    char            ip[16];
-    ulong           start;
-    ulong           end;
-    short           size;
-    char **         dummy;
-    char *          dummydata;
+	char    err[1024];
+	char    ip[16];
+	char ** dummy;
+	char *  dummydata;
+	ulong   start;
+	ulong   end;
+	bool    verbose;
+	short   size;
 } KRNET_API_EX;
 
 
