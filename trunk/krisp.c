@@ -1,5 +1,5 @@
 /*
- * $Id: krisp.c,v 1.1.1.1 2008-04-30 14:34:15 oops Exp $
+ * $Id: krisp.c,v 1.2 2010-06-20 05:59:50 oops Exp $
  */
 
 #include <stdio.h>
@@ -10,82 +10,114 @@
 #include <unistd.h>
 #include <krisp.h>
 
-extern char dberr[1024];
-char krerr[1024];
-
-char * version (void) {
+char * version (void) { // {{{
 	return krisp_version ();
-}
+} // }}}
 
-char * uversion (void) {
+char * uversion (void) { // {{{
 	return krisp_uversion ();
-}
+} // }}}
 
-char * kerror (void) {
-	return krerr;
-}
-
-KR_API * krisp_open (char *datafile, int city) {
+KR_API * open (char *datafile) { // {{{
 	KR_API *db;
+	char krerr[1024];
 
-	struct stat f;
-	int r;
-
-#ifdef HAVE_LIBGEOIP
-	geocity = city;
-#endif
-
-	r = stat (datafile, &f);
-
-	if ( r == -1 ) {
-		sprintf (krerr, "datafile not found : %s", datafile);
-		return NULL;
-	}
-
-	if ( f.st_size < 1 ) {
-		sprintf (krerr, "datafile size is zero: %s", datafile);
-		return NULL;
-	}
-
-	db = (KR_API *) malloc (sizeof (KR_API));
-
-	if ( kr_open (db, datafile) ) {
-		strcpy (krerr, dberr);
-		free (db);
+	if ( kr_open_safe (&db, datafile, krerr) == false ) {
+		fprintf (stderr, "%s\n", krerr);
 		return NULL;
 	}
 
 	return db;
-}
+} // }}}
 
-char * krisp_search (KR_API *db, char *host) {
-	KRNET_API isp;
-	static char ret[1024];
+KRNET_API * search (KR_API *db, char *host) { // {{{
+	KRNET_API * isp;
 
-	if ( strlen (host) > 255 ) {
-		strncpy (isp.ip , host, 255);
-		isp.ip[255] = 0;
-	} else {
-		strcpy (isp.ip, host);
-	}
-
-	if ( kr_search (&isp, db) ) {
+	isp = (KRNET_API *) malloc (sizeof (KRNET_API));
+	if ( isp == NULL ) {
+		fprintf (stderr, "search:: memory allocation failed\n");
 		return NULL;
 	}
 
-	sprintf (ret, "%s:%s:%s:%s:%s:%s:%s:%s:%s:%s:%s",
-			isp.key, isp.ip, isp.netmask, isp.network, isp.broadcast,
-			isp.icode, isp.iname, isp.ccode, isp.cname, isp.city, isp.region);
+	memset (isp, 0, sizeof (KRNET_API));
+	SAFECPY_256 (isp->ip, host);
+	isp->verbose = 0;
 
-	return ret;
-}
-
-void krisp_close (KR_API *db) {
-	if ( db != NULL ) {
-		kr_close (db);
-		free (db);
+	if ( kr_search (isp, db) ) {
+		SAFECPY_1024 (isp->err, db->err);
+		return NULL;
 	}
-}
+
+	return isp;
+} // }}}
+
+KRNET_API_EX * search_ex (KR_API *db, char *host, char *table) { // {{{
+	KRNET_API_EX * isp;
+	short i, l;
+
+	isp = (KRNET_API_EX *) malloc (sizeof (KRNET_API_EX));
+	if ( isp == NULL ) {
+		fprintf (stderr, "search:: memory allocation failed\n");
+		return NULL;
+	}
+
+	memset (isp, 0, sizeof (KRNET_API_EX));
+	SAFECPY_256 (isp->ip, host);
+	isp->verbose = 0;
+
+	db->table = table;
+	if ( kr_search_ex (isp, db) ) {
+		SAFECPY_1024 (isp->err, db->err);
+		return NULL;
+	}
+
+	for ( i=0; i<isp->size - 1; i++ ) {
+		l = strlen (isp->dummy[0]);
+		isp->dummydata[0+l] = ':';
+	}
+
+	return isp;
+} // }}}
+
+void free_search (KRNET_API * isp) { // {{{
+	if ( isp != NULL )
+		free (isp);
+} // }}}
+
+void free_search_ex (KRNET_API_EX * isp) { // {{{
+	if ( isp != NULL ) {
+		initStruct_ex (isp, true);
+		free (isp);
+	}
+} // }}}
+
+void kclose (KR_API * db) { // {{{
+	kr_close (db);
+} // }}}
+
+ulong kip2long (char *ip) { // {{{
+	return kr_ip2long (ip);
+} // }}}
+
+ulong knetmask (ulong start, ulong end) { // {{{
+	return kr_netmask (start, end);
+} // }}}
+
+ulong knetwork (ulong ip, ulong mask) { // {{{
+	return kr_network (ip, mask);
+} // }}}
+
+ulong kbroadcast (ulong ip, ulong mask) { // {{{
+	return kr_broadcast (ip, mask);
+} // }}}
+
+ulong kprefix2long (short prefix) { // {{{
+	return kr_prefix2long (prefix);
+} // }}}
+
+short klong2prefix (ulong mask) { // {{{
+	return kr_long2prefix (mask);
+} // }}}
 
 /*
  * Local variables:

@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-# $Id: setup.py,v 1.1.1.1 2008-04-30 14:34:15 oops Exp $
+# $Id: setup.py,v 1.2 2010-06-20 05:59:50 oops Exp $
 
 from distutils.core import setup, Extension
 import os
@@ -21,17 +21,15 @@ for arg in envlist :
 	elif arg[1] == 'l' :
 		libs.append (arg[2:])
 
-		if re.match ('^GeoIP', arg[2:]) :
-			defs.append (('HAVE_LIBGEOIP', '1'))
-		elif re.match ('^sqlite3', arg[2:]) :
+		if re.match ('^sqlite3', arg[2:]) :
 			defs.append (('HAVE_LIBSQLITE3', '1'))
 	elif arg[1] == 'I' :
 		incdir.append (arg[2:])
 
 setup (
 		name         = 'krisp',
-		version      = '1.0.0',
-		description  = 'python binding for libkrisp API',
+		version      = '2.0.0',
+		description  = 'python binding for libkrisp API 2.0.0',
 		author       = 'JoungKyun.Kim',
 		author_email = 'admin@oops.org',
 		url          = 'http://oops.org',
