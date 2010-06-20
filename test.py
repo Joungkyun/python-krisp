@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-# $Id: test.py,v 1.2 2010-06-20 05:59:50 oops Exp $
+# $Id: test.py,v 1.3 2010-06-20 06:09:44 oops Exp $
 
 import sys
 import os
@@ -13,8 +13,10 @@ except ImportError:
 	sys.path.append (os.getcwd() + '/build/lib.linux-i686-2.5');
 	import krisp
 
-print "libkrisp version : %s" % krisp.version ()
-print "libkrisp uversion: %s" % krisp.uversion ()
+print "krisp module version  : %s" % krisp.modversion ()
+print "krisp module uversion : %s" % krisp.moduversion ()
+print "libkrisp version      : %s" % krisp.version ()
+print "libkrisp uversion     : %s" % krisp.uversion ()
 
 p = krisp.open ('/usr/share/krisp/krisp.dat')
 
