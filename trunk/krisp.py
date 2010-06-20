@@ -132,6 +132,12 @@ prefix2long = _krisp.kprefix2long
 long2prefix = _krisp.klong2prefix
 
 
+def modversion () :
+	return '2.0.0'
+
+def moduversion () :
+	return '002000000'
+
 def long2ip (longip) :
     ip = [ 0, 0, 0, 0]
     for i in xrange (0, 4) :
