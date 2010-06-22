@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-# $Id: test.py,v 1.5 2010-06-22 03:23:55 oops Exp $
+# $Id: test.py,v 1.6 2010-06-22 17:30:12 oops Exp $
 
 import sys
 import os
@@ -55,7 +55,7 @@ for host in search_host :
 	print '%-10s : ' % host,
 
 	err = []
-	r = krisp.search_ex (p, host, 'krisp12', err)
+	r = krisp.search_ex (p, host, 'krisp', err)
 	if not r :
 		print err[0]
 		continue
