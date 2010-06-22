@@ -139,7 +139,7 @@ long2prefix = _krisp.klong2prefix
 
 
 
-# $Id: krisp.py,v 1.5 2010-06-20 18:28:32 oops Exp $
+# $Id: krisp.py,v 1.6 2010-06-22 03:23:55 oops Exp $
 
 def modversion () :
 	return '2.0.0'
@@ -174,10 +174,10 @@ keys_ex = [
 		'ip', 'start', 'end', 'size', 'dummydata',
 ]
 
-def search (db, host, err = [ 'err' ]) :
+def search (db, host, err) :
 	r = _krisp.search (db, host)
 	if ( r.err ) :
-		err[0] = deepcopy (r.err)
+		err.append (r.err)
 		return None
 
 	v = search_skelton ()
@@ -203,7 +203,7 @@ import re
 def search_ex (db, host, table, err) :
 	r = _krisp.search_ex (db, host, table)
 	if ( r.err ) :
-		err[0] = deepcopy (r.err)
+		err.append (r.err)
 		return None
 
 	v = search_skelton ()

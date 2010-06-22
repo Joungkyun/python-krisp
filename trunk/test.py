@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-# $Id: test.py,v 1.4 2010-06-20 18:20:17 oops Exp $
+# $Id: test.py,v 1.5 2010-06-22 03:23:55 oops Exp $
 
 import sys
 import os
@@ -33,7 +33,7 @@ for host in search_host :
 	# init error message variable
 	print '%-10s : ' % host,
 
-	err = [ '' ]
+	err = []
 	r = krisp.search (p, host, err)
 	if not r :
 		print err[0]
@@ -44,6 +44,7 @@ for host in search_host :
 	print '%s(%15s) [%15s - %-15s] %2s %s' % (krisp.ip2long (r.ip), r.ip, r.start, r.end, r.ccode, r.icode)
 
 	del r
+	del err
 
 
 print
@@ -53,8 +54,8 @@ print
 for host in search_host :
 	print '%-10s : ' % host,
 
-	err = [ '' ]
-	r = krisp.search_ex (p, host, 'krisp', err)
+	err = []
+	r = krisp.search_ex (p, host, 'krisp12', err)
 	if not r :
 		print err[0]
 		continue
@@ -62,6 +63,7 @@ for host in search_host :
 	print '%s(%15s) [%15s - %-15s] %2s %s' % (krisp.ip2long (r.ip), r.ip, r.start, r.end, r.dummy[0], r.dummy[2])
 
 	del r
+	del err
 
 krisp.close (p)
 
