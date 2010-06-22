@@ -1,0 +1,8 @@
+$Id: README,v 1.1 2010-06-20 05:59:50 oops Exp $
+
+This is python extension that use to libkrisp.
+
+If you want to link libkrisp under 3.x (for example 2.x.x),
+use v1 branch. Head branch is required over libkrisp 3.x.x
+
+This modules is thread safe.

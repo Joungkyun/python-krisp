@@ -1,0 +1,27 @@
+$Id: Changelog,v 1.4 2010-06-22 03:23:55 oops Exp $
+
+python KRISP Module Changelog
+
+
+*2.0.0
+--------------------------------------------------------------------------------
+Tue Jun 22 2010
+by JoungKyun.Kim <http://oops.org>
+	- fixed error messages by call-by-reference on search(_ex)
+
+Mon Jun 21 2010
+by JoungKyun.Kim <http://oops.org>
+	- fixed error message processing on search(_ex) api
+	- add mask2prefix method
+
+Sun Jun 20 2010
+by JoungKyun.Kim <http://oops.org>
+	- 2.0 tree start
+	- require over libkrisp 3.x
+
+
+*1.0.0
+--------------------------------------------------------------------------------
+Tue Apr 30 2008
+by JoungKyun.Kim <http://oops.org>
+	- 1.0.0 release
