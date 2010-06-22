@@ -1,5 +1,5 @@
 /*
- * $Id: krisp.c,v 1.3 2010-06-20 18:20:17 oops Exp $
+ * $Id: krisp.c,v 1.4 2010-06-22 16:33:51 oops Exp $
  */
 
 #include <stdio.h>
@@ -73,8 +73,8 @@ KRNET_API_EX * search_ex (KR_API *db, char *host, char *table) { // {{{
 	}
 
 	for ( i=0; i<isp->size - 1; i++ ) {
-		l = strlen (isp->dummy[0]);
-		isp->dummydata[0+l] = ':';
+		l = strlen (isp->dummy[i]);
+		isp->dummydata[i+l] = ':';
 	}
 
 	return isp;
