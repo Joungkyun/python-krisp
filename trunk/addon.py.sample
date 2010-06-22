@@ -1,5 +1,5 @@
 
-# $Id: addon.py.sample,v 1.4 2010-06-20 18:28:32 oops Exp $
+# $Id: addon.py.sample,v 1.5 2010-06-22 16:32:01 oops Exp $
 
 def modversion () :
 	return '2.0.0'
@@ -37,7 +37,7 @@ keys_ex = [
 def search (db, host, err) :
 	r = _krisp.search (db, host)
 	if ( r.err ) :
-		err[0] = deepcopy (r.err)
+		err.append (r.err)
 		return None
 
 	v = search_skelton ()
@@ -63,7 +63,7 @@ import re
 def search_ex (db, host, table, err) :
 	r = _krisp.search_ex (db, host, table)
 	if ( r.err ) :
-		err[0] = deepcopy (r.err)
+		err.append (r.err)
 		return None
 
 	v = search_skelton ()
