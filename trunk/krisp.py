@@ -139,7 +139,7 @@ long2prefix = _krisp.klong2prefix
 
 
 
-# $Id: krisp.py,v 1.6 2010-06-22 03:23:55 oops Exp $
+# $Id: krisp.py,v 1.7 2010-06-22 17:29:35 oops Exp $
 
 def modversion () :
 	return '2.0.0'
@@ -184,15 +184,15 @@ def search (db, host, err) :
 
 	for key in keys :
 		if key == 'netmask' :
-			setattr (v, 'netmask', deepcopy (long2ip (r.netmask)))
-			setattr (v, 'network', deepcopy (long2ip (network (r.start, r.netmask))))
-			setattr (v, 'broadcast', deepcopy (long2ip (broadcast(r.start, r.netmask))))
+			setattr (v, 'netmask', long2ip (r.netmask))
+			setattr (v, 'network', long2ip (network (r.start, r.netmask)))
+			setattr (v, 'broadcast', long2ip (broadcast(r.start, r.netmask)))
 		elif key == 'start' :
-			setattr (v, key, deepcopy (long2ip(r.start)))
+			setattr (v, key, long2ip(r.start))
 		elif key == 'end' :
-			setattr (v, key, deepcopy (long2ip(r.end)))
+			setattr (v, key, long2ip(r.end))
 		else :
-			setattr (v, key, deepcopy (getattr(r, key)))
+			setattr (v, key, getattr(r, key))
 
 
 	_krisp.free_search (r);
@@ -215,7 +215,7 @@ def search_ex (db, host, table, err) :
 		if key == 'start' or key == 'end' :
 			setattr (v, key, long2ip (getattr (r, key)))
 		else :
-			setattr (v, key, deepcopy (getattr (r, key)))
+			setattr (v, key, getattr (r, key))
 
 	mask = netmask (r.start, r.end)
 	setattr (v, 'netmask', long2ip (mask));
@@ -223,7 +223,7 @@ def search_ex (db, host, table, err) :
 	setattr (v, 'broadcast', long2ip (broadcast(r.start, mask)));
 
 	ar = re.split (':', r.dummydata)
-	setattr (v, 'dummy', deepcopy (ar));
+	setattr (v, 'dummy', ar)
 	
 	_krisp.free_search_ex (r)
 
