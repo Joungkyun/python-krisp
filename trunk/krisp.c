@@ -1,5 +1,5 @@
 /*
- * $Id: krisp.c,v 1.6 2010-07-05 09:59:55 oops Exp $
+ * $Id: krisp.c,v 1.7 2010-07-05 12:54:26 oops Exp $
  */
 #include "Python.h"
 
@@ -165,7 +165,7 @@ static PyObject * py_search (PyObject * self, PyObject * args) { // {{{
 
 	if ( err != NULL ) {
 		if ( ! PyList_Check (err) ) {
-			PyErr_SetString (ErrorObject, "2th argument is must PyLis");
+			PyErr_SetString (ErrorObject, "3th argument is must PyLis");
 			return NULL;
 		}
 	}
