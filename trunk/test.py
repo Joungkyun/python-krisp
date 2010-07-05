@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-# $Id: test.py,v 1.6 2010-06-22 17:30:12 oops Exp $
+# $Id: test.py,v 1.7 2010-07-05 09:59:55 oops Exp $
 
 import sys
 import os
@@ -13,14 +13,16 @@ except ImportError:
 	sys.path.append (os.getcwd() + '/build/lib.linux-i686-2.5')
 	import krisp
 
-print "krisp module version  : %s" % krisp.modversion ()
-print "krisp module uversion : %s" % krisp.moduversion ()
+print "krisp module version  : %s" % krisp.mod_version ()
+print "krisp module uversion : %s" % krisp.mod_uversion ()
 print "libkrisp version      : %s" % krisp.version ()
 print "libkrisp uversion     : %s" % krisp.uversion ()
 
-p = krisp.open ('/usr/share/krisp/krisp.dat')
+err = [];
+p = krisp.open ('/usr/share/krisp/krisp.dat', err)
 
-if not p :
+if ( p == None ) :
+	print "Error: %s" % err[0]
 	sys.exit (1)
 
 print
@@ -56,14 +58,14 @@ for host in search_host :
 
 	err = []
 	r = krisp.search_ex (p, host, 'krisp', err)
-	if not r :
+	if ( r == None ) :
 		print err[0]
 		continue
 
-	print '%s(%15s) [%15s - %-15s] %2s %s' % (krisp.ip2long (r.ip), r.ip, r.start, r.end, r.dummy[0], r.dummy[2])
-
-	del r
-	del err
+	print '%lu(%15s) [%15s - %-15s] %2s %s' % (krisp.ip2long (r.ip), r.ip, r.start, r.end, r.dummy[0], r.dummy[2])
+#
+#	del r
+#	del err
 
 krisp.close (p)
 
@@ -75,10 +77,10 @@ print 'LONG -> IP : %u -> %s' % (long, krisp.long2ip (long))
 
 start = '192.168.10.51'
 end   = '192.168.10.121'
-mask  = krisp.netmask (krisp.ip2long (start), krisp.ip2long (end))
-prefix = krisp.long2prefix (mask)
-print 'RANGE      : %s - %s => mask %s (/%d)' % (start, end, krisp.long2ip (mask), prefix)
-print '             network  : %s' % krisp.long2ip (krisp.network (krisp.ip2long (start), mask))
-print '             broadcast: %s' % krisp.long2ip (krisp.broadcast (krisp.ip2long (start), mask))
+mask  = krisp.netmask (start, end)
+prefix = krisp.mask2prefix (mask)
+print 'RANGE      : %s - %s => mask %s (/%d)' % (start, end, mask, prefix)
+print '             network  : %s' % krisp.network (start, mask)
+print '             broadcast: %s' % krisp.broadcast (start, mask)
 
 sys.exit (0)
