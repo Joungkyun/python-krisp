@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-# $Id: setup.py,v 1.4 2010-08-02 18:31:35 oops Exp $
+# $Id: setup.py,v 1.5 2010-08-02 18:32:19 oops Exp $
 
 from distutils.core import setup, Extension
 import os
@@ -27,7 +27,7 @@ for arg in envlist :
 
 setup (
 		name         = 'krisp',
-		version      = '2.0.0',
+		version      = '2.0.1',
 		description  = 'python binding for libkrisp API',
 		author       = 'JoungKyun.Kim',
 		author_email = 'admin@oops.org',
