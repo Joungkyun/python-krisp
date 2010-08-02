@@ -1,6 +1,11 @@
 Revision history for Python extension KRISP
 
-$Id: Changes,v 1.1 2010-07-05 09:59:35 oops Exp $
+$Id: Changes,v 1.2 2010-08-02 18:31:35 oops Exp $
+
+2.0.1
+	* Tue Aug  3 2010 JoungKyun.Kim <http://oops.org>
+	- fixed build environment
+	- changed path of libkrisp headers
 
 2.0.0
 	* Mon Jul  5 2010 JoungKyun.Kim <http://oops.org>

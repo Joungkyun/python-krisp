@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-# $Id: setup.py,v 1.3 2010-07-05 09:59:55 oops Exp $
+# $Id: setup.py,v 1.4 2010-08-02 18:31:35 oops Exp $
 
 from distutils.core import setup, Extension
 import os
@@ -12,7 +12,8 @@ libdir = []
 libs   = [ 'krisp' ]
 defs   = []
 
-krisp_env = (os.popen ('krisp-config --libs')).read ()
+krisp_env = (os.popen ('krisp-config --libs')).read () + ' ' + \
+			(os.popen ('krisp-config --defs')).read ()
 envlist   = string.split (krisp_env)
 
 for arg in envlist :
@@ -20,6 +21,9 @@ for arg in envlist :
 		libdir.append (arg[2:])
 	elif arg[1] == 'I' :
 		incdir.append (arg[2:])
+	elif arg[1] == 'D' :
+		defs.append ((arg[2:], None))
+
 
 setup (
 		name         = 'krisp',
