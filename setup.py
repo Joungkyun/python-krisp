@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-# $Id: setup.py,v 1.5 2010-08-02 18:32:19 oops Exp $
+# $Id: setup.py,v 1.6 2010-08-08 16:23:21 oops Exp $
 
 from distutils.core import setup, Extension
 import os
@@ -32,7 +32,7 @@ setup (
 		author       = 'JoungKyun.Kim',
 		author_email = 'admin@oops.org',
 		url          = 'http://oops.org',
-		license      = 'GPL v2',
+		license      = 'LGPL',
 		platforms    = 'x86/x86_64',
 		#py_modules   = [ 'krisp' ],
 		ext_modules  = [
