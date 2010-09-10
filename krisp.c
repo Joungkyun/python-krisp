@@ -1,5 +1,5 @@
 /*
- * $Id: krisp.c,v 1.8 2010-08-08 16:17:43 oops Exp $
+ * $Id: krisp.c,v 1.9 2010-09-10 18:49:08 oops Exp $
  */
 #include "Python.h"
 
@@ -322,7 +322,8 @@ static PyObject * py_close (PyObject * self, PyObject * args) { // {{{
 	if ( ! PyArg_ParseTuple (args, "i", &db) )
 		return NULL;
 
-	kr_close ((KR_API *) db);
+	kr_close ((KR_API **) &db);
+	db = NULL;
 
 	return Py_None;
 } // }}}
