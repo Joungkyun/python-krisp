@@ -1,6 +1,6 @@
 Revision history for Python extension KRISP
 
-$Id: Changes,v 1.9 2010-09-10 19:55:44 oops Exp $
+$Id: Changes,v 1.10 2010-09-10 20:24:16 oops Exp $
 
 2.1.0
 	* Mon Sep 11 2010 JoungKyun.Kim <http://oops.org>
@@ -8,6 +8,7 @@ $Id: Changes,v 1.9 2010-09-10 19:55:44 oops Exp $
 	- support whether ipv4 address or long ip address with arguments
       of py_netmask, py_mask2prefix, py_network, py_broadcast APIs
 	- add set_mtime_interval api
+	- add set_debug api
 
 
 2.0.1
