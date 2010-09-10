@@ -1,5 +1,5 @@
 /*
- * $Id: krisp.c,v 1.11 2010-09-10 19:55:44 oops Exp $
+ * $Id: krisp.c,v 1.12 2010-09-10 20:24:16 oops Exp $
  */
 #include "Python.h"
 
@@ -166,14 +166,15 @@ static PyObject * py_search (PyObject * self, PyObject * args) { // {{{
 	PyObject *			prop;
 	PyObject *			err = NULL;
 	char *				host;
-	int *				db;
+	int *				pdb;
 	int					argc;
 
+	KR_API *			db;
 	KRNET_API 			isp;
 	char				buf[16];
 	ulong				networkv, broadcastv;
 
-	if ( ! PyArg_ParseTuple (args, "is|O", &db, &host, &err) )
+	if ( ! PyArg_ParseTuple (args, "is|O", &pdb, &host, &err) )
 		return NULL;
 
 	if ( err != NULL ) {
@@ -183,10 +184,12 @@ static PyObject * py_search (PyObject * self, PyObject * args) { // {{{
 		}
 	}
 
-	SAFECPY_256 (isp.ip, host);
-	isp.verbose = 0;
+	db = (KR_API *) pdb;
 
-	if ( kr_search (&isp, (KR_API *) db) ) {
+	SAFECPY_256 (isp.ip, host);
+	isp.verbose = db->verbose;
+
+	if ( kr_search (&isp, db) ) {
 		if ( argc > 2 ) {
 			PyObject * value = PyString_FromString (isp.err);
 			PyList_Append (err, value);
@@ -268,9 +271,9 @@ static PyObject * py_search_ex (PyObject * self, PyObject * args) { // {{{
 	SAFECPY_256 (isp.ip, host);
 	dbh = (KR_API *) db;
 	dbh->table = table;
-	isp.verbose = 0;
+	isp.verbose = dbh->verbose;
 
-	if ( kr_search_ex (&isp, (KR_API *) db) ) {
+	if ( kr_search_ex (&isp, dbh) ) {
 		if ( argc > 3 ) {
 			PyObject * value = PyString_FromString (isp.err);
 			PyList_Append (err, value);
@@ -353,7 +356,21 @@ static PyObject * py_set_mtime_interval (PyObject * self, PyObject * args) { // 
 
 	db->db_time_stamp_interval = interval;
 
-	return (PyObject *) NULL;
+	return Py_BuildValue ("");
+} // }}}
+
+static PyObject * py_set_debug (PyObject * self, PyObject * args) { // {{{
+	int *		pdb;
+	int			switches;
+	KR_API *	db;
+
+	if ( ! PyArg_ParseTuple (args, "ii", &pdb, &switches) )
+		return (PyObject *) NULL;
+
+	db = (KR_API *) pdb;
+
+	db->verbose = switches;
+	return Py_BuildValue ("");
 } // }}}
 
 static struct PyMethodDef krisp_methods[] = { // {{{
@@ -372,7 +389,8 @@ static struct PyMethodDef krisp_methods[] = { // {{{
 	{ "search",			py_search,			METH_VARARGS },
 	{ "search_ex",		py_search_ex,		METH_VARARGS },
 	{ "close",			py_close,			METH_VARARGS },
-	{ "set_mtime_interval",	py_set_mtime_interval, METH_VARARGS },
+	{ "set_mtime_interval",	py_set_mtime_interval,	METH_VARARGS },
+	{ "set_debug",		py_set_debug,		METH_VARARGS },
 	{ NULL, NULL }
 }; // }}}
 
