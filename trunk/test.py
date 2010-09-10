@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-# $Id: test.py,v 1.7 2010-07-05 09:59:55 oops Exp $
+# $Id: test.py,v 1.8 2010-09-10 20:24:16 oops Exp $
 
 import sys
 import os
@@ -24,6 +24,9 @@ p = krisp.open ('/usr/share/krisp/krisp.dat', err)
 if ( p == None ) :
 	print "Error: %s" % err[0]
 	sys.exit (1)
+
+krisp.set_mtime_interval (p, 0);
+#krisp.set_debug (p, 1)
 
 print
 print '** SEARCH test'
