@@ -1,12 +1,25 @@
 /*
- * $Id: krisp.c,v 1.9 2010-09-10 18:49:08 oops Exp $
+ * $Id: krisp.c,v 1.10 2010-09-10 19:17:46 oops Exp $
  */
 #include "Python.h"
 
 #include <krisp.h>
+#include <stdlib.h>
 #include "version.h"
 
+#if defined(__GNUC__) && __GNUC__ >= 4
+	#define KR_INT_API  __attribute__ ((visibility("hidden")))
+#else
+	#define KR_INT_API
+#endif
+
 static PyObject * ErrorObject;
+
+KR_INT_API ulong krisp_format_convert (char * v) { // {{{
+	if ( strchr (v, '.') == NULL )
+		return (ulong) strtoul (v, NULL, 10);
+	return ip2long (v);
+} // }}}
 
 static PyObject * py_mod_version (PyObject * self, PyObject * args) { // {{{
 	return Py_BuildValue ("s", MOD_VERSION);
@@ -53,8 +66,8 @@ static PyObject * py_netmask (PyObject * self, PyObject * args) { // {{{
 	if ( ! PyArg_ParseTuple (args, "ss", &start, &end) )
 		return NULL;
 
-	s = ip2long (start);
-	e = ip2long (end);
+	s = krisp_format_convert (start);
+	e = krisp_format_convert (end);
 
 	return Py_BuildValue ("s", long2ip_r (guess_netmask (s, e), retval));
 } // }}}
@@ -66,7 +79,7 @@ static PyObject * py_mask2prefix (PyObject * self, PyObject * args) { // {{{
 	if ( ! PyArg_ParseTuple (args, "s", &mask) )
 		return NULL;
 
-	m = ip2long (mask);
+	m = krisp_format_convert (mask);
 
 	return Py_BuildValue ("i", long2prefix (m));
 } // }}}
@@ -90,8 +103,8 @@ static PyObject * py_network (PyObject * self, PyObject * args) { // {{{
 	if ( ! PyArg_ParseTuple (args, "ss", &ip, &mask) )
 		return NULL;
 
-	i = ip2long (ip);
-	m = ip2long (mask);
+	i = krisp_format_convert (ip);
+	m = krisp_format_convert (mask);
 
 	return Py_BuildValue ("s", long2ip_r (network (i, m), retval));
 } // }}}
@@ -105,8 +118,8 @@ static PyObject * py_broadcast (PyObject * self, PyObject * args) { // {{{
 	if ( ! PyArg_ParseTuple (args, "ss", &ip, &mask) )
 		return NULL;
 
-	i = ip2long (ip);
-	m = ip2long (mask);
+	i = krisp_format_convert (ip);
+	m = krisp_format_convert (mask);
 
 	return Py_BuildValue ("s", long2ip_r (broadcast (i, m), retval));
 } // }}}
