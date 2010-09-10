@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.5 2010-09-10 19:14:16 oops Exp $
+# $Id: Makefile,v 1.6 2010-09-10 19:15:24 oops Exp $
 
 PYTHON = /usr/bin/python
 
@@ -12,3 +12,6 @@ intall:
 
 clean:
 	-rm -rf build *.pyc
+
+test:
+	$(PYTHON) test.py
