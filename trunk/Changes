@@ -1,6 +1,11 @@
 Revision history for Python extension KRISP
 
-$Id: Changes,v 1.5 2010-08-08 16:24:01 oops Exp $
+$Id: Changes,v 1.6 2010-09-10 18:49:08 oops Exp $
+
+2.1.1
+	* Mon Sep 11 2010 JoungKyun.Kim <http://oops.org>
+	- linked with over libkrisp 3.1.0
+
 
 2.0.1
 	* Mon Aug  9 2010 JoungKyun.Kim <http://oops.org>
