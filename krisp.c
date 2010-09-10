@@ -1,5 +1,5 @@
 /*
- * $Id: krisp.c,v 1.10 2010-09-10 19:17:46 oops Exp $
+ * $Id: krisp.c,v 1.11 2010-09-10 19:55:44 oops Exp $
  */
 #include "Python.h"
 
@@ -341,6 +341,21 @@ static PyObject * py_close (PyObject * self, PyObject * args) { // {{{
 	return Py_None;
 } // }}}
 
+static PyObject * py_set_mtime_interval (PyObject * self, PyObject * args) { // {{{
+	int *		pdb;
+	int			interval;
+	KR_API *	db;
+
+	if ( ! PyArg_ParseTuple (args, "ii", &pdb, &interval) )
+		return (PyObject *) NULL;
+
+	db = (KR_API *) pdb;
+
+	db->db_time_stamp_interval = interval;
+
+	return (PyObject *) NULL;
+} // }}}
+
 static struct PyMethodDef krisp_methods[] = { // {{{
 	{ "mod_version",	py_mod_version,		METH_NOARGS },
 	{ "mod_uversion",	py_mod_uversion,	METH_NOARGS },
@@ -357,6 +372,7 @@ static struct PyMethodDef krisp_methods[] = { // {{{
 	{ "search",			py_search,			METH_VARARGS },
 	{ "search_ex",		py_search_ex,		METH_VARARGS },
 	{ "close",			py_close,			METH_VARARGS },
+	{ "set_mtime_interval",	py_set_mtime_interval, METH_VARARGS },
 	{ NULL, NULL }
 }; // }}}
 
