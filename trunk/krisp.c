@@ -166,7 +166,6 @@ static PyObject * py_search (PyObject * self, PyObject * args) { // {{{
 	PyObject *			prop;
 	PyObject *			err = NULL;
 	char *				host;
-	int *				pdb;
 	int					argc;
 
 	KR_API *			db;
@@ -174,7 +173,7 @@ static PyObject * py_search (PyObject * self, PyObject * args) { // {{{
 	char				buf[16];
 	ulong				networkv, broadcastv;
 
-	if ( ! PyArg_ParseTuple (args, "is|O", &pdb, &host, &err) )
+	if ( ! PyArg_ParseTuple (args, "is|O", (int *) &db, &host, &err) )
 		return NULL;
 
 	if ( err != NULL ) {
@@ -183,8 +182,6 @@ static PyObject * py_search (PyObject * self, PyObject * args) { // {{{
 			return NULL;
 		}
 	}
-
-	db = (KR_API *) pdb;
 
 	SAFECPY_256 (isp.ip, host);
 	isp.verbose = db->verbose;
@@ -250,7 +247,6 @@ static PyObject * py_search_ex (PyObject * self, PyObject * args) { // {{{
 	PyObject *			err = NULL;
 	char *				host;
 	char *				table;
-	int *				db;
 	int					argc;
 
 	KR_API *			dbh;
@@ -258,7 +254,7 @@ static PyObject * py_search_ex (PyObject * self, PyObject * args) { // {{{
 	char				buf[16];
 	ulong				netmask, networkv, broadcastv;
 
-	if ( ! PyArg_ParseTuple (args, "iss|O", &db, &host, &table, &err) )
+	if ( ! PyArg_ParseTuple (args, "iss|O", (int *) &dbh, &host, &table, &err) )
 		return NULL;
 
 	if ( err != NULL ) {
@@ -269,7 +265,6 @@ static PyObject * py_search_ex (PyObject * self, PyObject * args) { // {{{
 	}
 
 	SAFECPY_256 (isp.ip, host);
-	dbh = (KR_API *) db;
 	dbh->table = table;
 	isp.verbose = dbh->verbose;
 
@@ -333,26 +328,23 @@ static PyObject * py_search_ex (PyObject * self, PyObject * args) { // {{{
 } // }}}
 
 static PyObject * py_close (PyObject * self, PyObject * args) { // {{{
-	int *		db;
+	KR_API *	db;
 
-	if ( ! PyArg_ParseTuple (args, "i", &db) )
+	if ( ! PyArg_ParseTuple (args, "i", (int *) &db) )
 		return NULL;
 
-	kr_close ((KR_API **) &db);
+	kr_close (&db);
 	db = NULL;
 
 	return Py_None;
 } // }}}
 
 static PyObject * py_set_mtime_interval (PyObject * self, PyObject * args) { // {{{
-	int *		pdb;
 	int			interval;
 	KR_API *	db;
 
-	if ( ! PyArg_ParseTuple (args, "ii", &pdb, &interval) )
+	if ( ! PyArg_ParseTuple (args, "ii", (int *) &db, &interval) )
 		return (PyObject *) NULL;
-
-	db = (KR_API *) pdb;
 
 	db->db_time_stamp_interval = interval;
 
@@ -360,14 +352,11 @@ static PyObject * py_set_mtime_interval (PyObject * self, PyObject * args) { // 
 } // }}}
 
 static PyObject * py_set_debug (PyObject * self, PyObject * args) { // {{{
-	int *		pdb;
 	int			switches;
 	KR_API *	db;
 
-	if ( ! PyArg_ParseTuple (args, "ii", &pdb, &switches) )
+	if ( ! PyArg_ParseTuple (args, "ii", (int *) &db, &switches) )
 		return (PyObject *) NULL;
-
-	db = (KR_API *) pdb;
 
 	db->verbose = switches;
 	return Py_BuildValue ("");
