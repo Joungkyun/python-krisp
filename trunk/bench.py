@@ -11,7 +11,15 @@ import time
 try:
 	import krisp
 except ImportError:
-	sys.path.append (os.getcwd() + '/build/lib.linux-i686-2.5')
+	osinfo = os.uname ()
+	sys.path.append (
+		os.getcwd () +
+		'/build/lib.' +
+		osinfo[0].lower() + '-' +
+		osinfo[4] + '-' +
+		str (sys.version_info[0]) + '.' +
+		str(sys.version_info[1])
+	)
 	import krisp
 
 def microtime (get_as_float = 0) :
