@@ -13,9 +13,16 @@ INSTALLATION
 
 To install this extension type the following:
 
-    python setup.py build
-    python setup.py install
+    make install
 
+    build options:
+
+        make build : only build
+        make test  : test building module
+        make clean : clean build object
+
+        if your python path is not /usr/bin/python:
+        make PYTHON=path option
 
 DEPENDENCIES
 
