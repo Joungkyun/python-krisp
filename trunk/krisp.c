@@ -175,6 +175,7 @@ static PyObject * py_search (PyObject * self, PyObject * args) { // {{{
 
 	if ( ! PyArg_ParseTuple (args, "ls|O", (long *) &db, &host, &err) )
 		return NULL;
+	argc = PyTuple_Size (args);
 
 	if ( err != NULL ) {
 		if ( ! PyList_Check (err) ) {
@@ -256,6 +257,7 @@ static PyObject * py_search_ex (PyObject * self, PyObject * args) { // {{{
 
 	if ( ! PyArg_ParseTuple (args, "lss|O", (long *) &dbh, &host, &table, &err) )
 		return NULL;
+	argc = PyTuple_Size (args);
 
 	if ( err != NULL ) {
 		if ( ! PyList_Check (err) ) {

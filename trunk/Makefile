@@ -7,12 +7,12 @@ PROG = krisp
 
 DIST_FILES = COPYING Changes README
 
-all: install
+all: build
 
 build: krisp.c version.h
 	$(PYTHON) setup.py build
 
-intall:
+install:
 	$(PYTHON) setup.py install
 
 clean:
