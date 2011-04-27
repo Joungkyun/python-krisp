@@ -1,25 +1,12 @@
 /*
- * $Id: krisp.c,v 1.12 2010-09-10 20:24:16 oops Exp $
+ * $Id: krisp.c,v 1.8 2010-08-08 16:17:43 oops Exp $
  */
 #include "Python.h"
 
 #include <krisp.h>
-#include <stdlib.h>
 #include "version.h"
 
-#if defined(__GNUC__) && __GNUC__ >= 4
-	#define KR_INT_API  __attribute__ ((visibility("hidden")))
-#else
-	#define KR_INT_API
-#endif
-
 static PyObject * ErrorObject;
-
-KR_INT_API ulong krisp_format_convert (char * v) { // {{{
-	if ( strchr (v, '.') == NULL )
-		return (ulong) strtoul (v, NULL, 10);
-	return ip2long (v);
-} // }}}
 
 static PyObject * py_mod_version (PyObject * self, PyObject * args) { // {{{
 	return Py_BuildValue ("s", MOD_VERSION);
@@ -66,8 +53,8 @@ static PyObject * py_netmask (PyObject * self, PyObject * args) { // {{{
 	if ( ! PyArg_ParseTuple (args, "ss", &start, &end) )
 		return NULL;
 
-	s = krisp_format_convert (start);
-	e = krisp_format_convert (end);
+	s = ip2long (start);
+	e = ip2long (end);
 
 	return Py_BuildValue ("s", long2ip_r (guess_netmask (s, e), retval));
 } // }}}
@@ -79,7 +66,7 @@ static PyObject * py_mask2prefix (PyObject * self, PyObject * args) { // {{{
 	if ( ! PyArg_ParseTuple (args, "s", &mask) )
 		return NULL;
 
-	m = krisp_format_convert (mask);
+	m = ip2long (mask);
 
 	return Py_BuildValue ("i", long2prefix (m));
 } // }}}
@@ -103,8 +90,8 @@ static PyObject * py_network (PyObject * self, PyObject * args) { // {{{
 	if ( ! PyArg_ParseTuple (args, "ss", &ip, &mask) )
 		return NULL;
 
-	i = krisp_format_convert (ip);
-	m = krisp_format_convert (mask);
+	i = ip2long (ip);
+	m = ip2long (mask);
 
 	return Py_BuildValue ("s", long2ip_r (network (i, m), retval));
 } // }}}
@@ -118,8 +105,8 @@ static PyObject * py_broadcast (PyObject * self, PyObject * args) { // {{{
 	if ( ! PyArg_ParseTuple (args, "ss", &ip, &mask) )
 		return NULL;
 
-	i = krisp_format_convert (ip);
-	m = krisp_format_convert (mask);
+	i = ip2long (ip);
+	m = ip2long (mask);
 
 	return Py_BuildValue ("s", long2ip_r (broadcast (i, m), retval));
 } // }}}
@@ -166,14 +153,14 @@ static PyObject * py_search (PyObject * self, PyObject * args) { // {{{
 	PyObject *			prop;
 	PyObject *			err = NULL;
 	char *				host;
+	int *				db;
 	int					argc;
 
-	KR_API *			db;
 	KRNET_API 			isp;
 	char				buf[16];
 	ulong				networkv, broadcastv;
 
-	if ( ! PyArg_ParseTuple (args, "is|O", (int *) &db, &host, &err) )
+	if ( ! PyArg_ParseTuple (args, "is|O", &db, &host, &err) )
 		return NULL;
 
 	if ( err != NULL ) {
@@ -184,9 +171,9 @@ static PyObject * py_search (PyObject * self, PyObject * args) { // {{{
 	}
 
 	SAFECPY_256 (isp.ip, host);
-	isp.verbose = db->verbose;
+	isp.verbose = 0;
 
-	if ( kr_search (&isp, db) ) {
+	if ( kr_search (&isp, (KR_API *) db) ) {
 		if ( argc > 2 ) {
 			PyObject * value = PyString_FromString (isp.err);
 			PyList_Append (err, value);
@@ -247,6 +234,7 @@ static PyObject * py_search_ex (PyObject * self, PyObject * args) { // {{{
 	PyObject *			err = NULL;
 	char *				host;
 	char *				table;
+	int *				db;
 	int					argc;
 
 	KR_API *			dbh;
@@ -254,7 +242,7 @@ static PyObject * py_search_ex (PyObject * self, PyObject * args) { // {{{
 	char				buf[16];
 	ulong				netmask, networkv, broadcastv;
 
-	if ( ! PyArg_ParseTuple (args, "iss|O", (int *) &dbh, &host, &table, &err) )
+	if ( ! PyArg_ParseTuple (args, "iss|O", &db, &host, &table, &err) )
 		return NULL;
 
 	if ( err != NULL ) {
@@ -265,10 +253,11 @@ static PyObject * py_search_ex (PyObject * self, PyObject * args) { // {{{
 	}
 
 	SAFECPY_256 (isp.ip, host);
+	dbh = (KR_API *) db;
 	dbh->table = table;
-	isp.verbose = dbh->verbose;
+	isp.verbose = 0;
 
-	if ( kr_search_ex (&isp, dbh) ) {
+	if ( kr_search_ex (&isp, (KR_API *) db) ) {
 		if ( argc > 3 ) {
 			PyObject * value = PyString_FromString (isp.err);
 			PyList_Append (err, value);
@@ -328,38 +317,14 @@ static PyObject * py_search_ex (PyObject * self, PyObject * args) { // {{{
 } // }}}
 
 static PyObject * py_close (PyObject * self, PyObject * args) { // {{{
-	KR_API *	db;
+	int *		db;
 
-	if ( ! PyArg_ParseTuple (args, "i", (int *) &db) )
+	if ( ! PyArg_ParseTuple (args, "i", &db) )
 		return NULL;
 
-	kr_close (&db);
-	db = NULL;
+	kr_close ((KR_API *) db);
 
 	return Py_None;
-} // }}}
-
-static PyObject * py_set_mtime_interval (PyObject * self, PyObject * args) { // {{{
-	int			interval;
-	KR_API *	db;
-
-	if ( ! PyArg_ParseTuple (args, "ii", (int *) &db, &interval) )
-		return (PyObject *) NULL;
-
-	db->db_time_stamp_interval = interval;
-
-	return Py_BuildValue ("");
-} // }}}
-
-static PyObject * py_set_debug (PyObject * self, PyObject * args) { // {{{
-	int			switches;
-	KR_API *	db;
-
-	if ( ! PyArg_ParseTuple (args, "ii", (int *) &db, &switches) )
-		return (PyObject *) NULL;
-
-	db->verbose = switches;
-	return Py_BuildValue ("");
 } // }}}
 
 static struct PyMethodDef krisp_methods[] = { // {{{
@@ -378,8 +343,6 @@ static struct PyMethodDef krisp_methods[] = { // {{{
 	{ "search",			py_search,			METH_VARARGS },
 	{ "search_ex",		py_search_ex,		METH_VARARGS },
 	{ "close",			py_close,			METH_VARARGS },
-	{ "set_mtime_interval",	py_set_mtime_interval,	METH_VARARGS },
-	{ "set_debug",		py_set_debug,		METH_VARARGS },
 	{ NULL, NULL }
 }; // }}}
 

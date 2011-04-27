@@ -1,22 +1,6 @@
 Revision history for Python extension KRISP
 
-$Id: Changes,v 1.11 2010-09-10 20:24:39 oops Exp $
-
-2.1.1
-	* Tue Apr 26 2011 JoungKyun.Kim <http://oops.org>
-	- start 2.1.1 tree
-	- fixed segfault on 64bit system
-
-
-2.1.0
-	* Mon Sep 11 2010 JoungKyun.Kim <http://oops.org>
-	- linked with over libkrisp 3.1.0
-	- support whether ipv4 address or long ip address with arguments
-      of py_netmask, py_mask2prefix, py_network, py_broadcast APIs
-	- add set_mtime_interval api
-	- add set_debug api
-	- release 2.1.0
-
+$Id: Changes,v 1.5 2010-08-08 16:24:01 oops Exp $
 
 2.0.1
 	* Mon Aug  9 2010 JoungKyun.Kim <http://oops.org>
