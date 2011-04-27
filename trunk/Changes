@@ -2,7 +2,11 @@ Revision history for Python extension KRISP
 
 $Id: Changes,v 1.11 2010-09-10 20:24:39 oops Exp $
 
+
 2.1.1
+	* Wed Apr 27 2011 JoungKyun.Kim <http://oops.org>
+	- fixed to use uninitialized variables
+
 	* Tue Apr 26 2011 JoungKyun.Kim <http://oops.org>
 	- start 2.1.1 tree
 	- fixed segfault on 64bit system
