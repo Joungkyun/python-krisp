@@ -156,7 +156,7 @@ static PyObject * py_open (PyObject * self, PyObject * args) { // {{{
 		return Py_None;
 	}
 
-	return Py_BuildValue ("i", (int *) db);
+	return Py_BuildValue ("l", (long *) db);
 } // }}}
 
 static PyObject * py_search (PyObject * self, PyObject * args) { // {{{
@@ -173,7 +173,7 @@ static PyObject * py_search (PyObject * self, PyObject * args) { // {{{
 	char				buf[16];
 	ulong				networkv, broadcastv;
 
-	if ( ! PyArg_ParseTuple (args, "is|O", (int *) &db, &host, &err) )
+	if ( ! PyArg_ParseTuple (args, "ls|O", (long *) &db, &host, &err) )
 		return NULL;
 
 	if ( err != NULL ) {
@@ -254,7 +254,7 @@ static PyObject * py_search_ex (PyObject * self, PyObject * args) { // {{{
 	char				buf[16];
 	ulong				netmask, networkv, broadcastv;
 
-	if ( ! PyArg_ParseTuple (args, "iss|O", (int *) &dbh, &host, &table, &err) )
+	if ( ! PyArg_ParseTuple (args, "lss|O", (long *) &dbh, &host, &table, &err) )
 		return NULL;
 
 	if ( err != NULL ) {
@@ -330,7 +330,7 @@ static PyObject * py_search_ex (PyObject * self, PyObject * args) { // {{{
 static PyObject * py_close (PyObject * self, PyObject * args) { // {{{
 	KR_API *	db;
 
-	if ( ! PyArg_ParseTuple (args, "i", (int *) &db) )
+	if ( ! PyArg_ParseTuple (args, "l", (long *) &db) )
 		return NULL;
 
 	kr_close (&db);
@@ -343,7 +343,7 @@ static PyObject * py_set_mtime_interval (PyObject * self, PyObject * args) { // 
 	int			interval;
 	KR_API *	db;
 
-	if ( ! PyArg_ParseTuple (args, "ii", (int *) &db, &interval) )
+	if ( ! PyArg_ParseTuple (args, "li", (long *) &db, &interval) )
 		return (PyObject *) NULL;
 
 	db->db_time_stamp_interval = interval;
@@ -355,7 +355,7 @@ static PyObject * py_set_debug (PyObject * self, PyObject * args) { // {{{
 	int			switches;
 	KR_API *	db;
 
-	if ( ! PyArg_ParseTuple (args, "ii", (int *) &db, &switches) )
+	if ( ! PyArg_ParseTuple (args, "li", (long *) &db, &switches) )
 		return (PyObject *) NULL;
 
 	db->verbose = switches;
