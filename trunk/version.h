@@ -1,5 +1,5 @@
 /*
- * $Id: version.h,v 1.5 2010-09-10 18:49:01 oops Exp $
+ * $Id$
  */
 
 #define MOD_VERSION "2.1.1"
