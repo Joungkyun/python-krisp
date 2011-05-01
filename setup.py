@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-# $Id: setup.py,v 1.6 2010-08-08 16:23:21 oops Exp $
+# $Id$
 
 from distutils.core import setup, Extension
 import os

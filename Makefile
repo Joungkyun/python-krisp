@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.6 2010-09-10 19:15:24 oops Exp $
+# $Id$
 
 PYTHON = /usr/bin/python
 NAME = mod_krisp

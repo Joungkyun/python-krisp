@@ -1,5 +1,5 @@
 /*
- * $Id: krisp.c,v 1.12 2010-09-10 20:24:16 oops Exp $
+ * $Id$
  */
 #include "Python.h"
 

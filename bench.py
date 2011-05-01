@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-# $Id: bench.py,v 1.1 2010-07-05 09:59:55 oops Exp $
+# $Id$
 
 import sys
 import os

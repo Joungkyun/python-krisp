@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-# $Id: test.py,v 1.8 2010-09-10 20:24:16 oops Exp $
+# $Id$
 
 import sys
 import os
