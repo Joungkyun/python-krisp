@@ -13,7 +13,7 @@ libs   = [ 'krisp' ]
 defs   = []
 
 krisp_env = (os.popen ('krisp-config --libs')).read () + ' ' + \
-			(os.popen ('krisp-config --defs')).read ()
+			(os.popen ('krisp-config --includes')).read ()
 envlist   = string.split (krisp_env)
 
 for arg in envlist :
