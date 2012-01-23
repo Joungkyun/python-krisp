@@ -54,7 +54,8 @@ static PyObject * py_long2ip (PyObject * self, PyObject * args) { // {{{
 	if ( ! PyArg_ParseTuple (args, "k", &laddr) )
 		return NULL;
 
-	return Py_BuildValue ("s", long2ip_r (laddr, retval));
+	long2ip_r (laddr, retval);
+	return Py_BuildValue ("s", retval);
 } // }}}
 
 static PyObject * py_netmask (PyObject * self, PyObject * args) { // {{{
@@ -69,7 +70,8 @@ static PyObject * py_netmask (PyObject * self, PyObject * args) { // {{{
 	s = krisp_format_convert (start);
 	e = krisp_format_convert (end);
 
-	return Py_BuildValue ("s", long2ip_r (guess_netmask (s, e), retval));
+	long2ip_r (guess_netmask (s, e), retval);
+	return Py_BuildValue ("s", retval);
 } // }}}
 
 static PyObject * py_mask2prefix (PyObject * self, PyObject * args) { // {{{
@@ -106,7 +108,8 @@ static PyObject * py_network (PyObject * self, PyObject * args) { // {{{
 	i = krisp_format_convert (ip);
 	m = krisp_format_convert (mask);
 
-	return Py_BuildValue ("s", long2ip_r (network (i, m), retval));
+	long2ip_r (network (i, m), retval);
+	return Py_BuildValue ("s", retval);
 } // }}}
 
 static PyObject * py_broadcast (PyObject * self, PyObject * args) { // {{{
@@ -121,7 +124,8 @@ static PyObject * py_broadcast (PyObject * self, PyObject * args) { // {{{
 	i = krisp_format_convert (ip);
 	m = krisp_format_convert (mask);
 
-	return Py_BuildValue ("s", long2ip_r (broadcast (i, m), retval));
+	long2ip_r (broadcast (i, m), retval);
+	return Py_BuildValue ("s", retval);
 } // }}}
 
 static PyObject * py_open (PyObject * self, PyObject * args) { // {{{
@@ -203,19 +207,24 @@ static PyObject * py_search (PyObject * self, PyObject * args) { // {{{
 	prop = Py_BuildValue ("s", isp.ip);
 	PyDict_SetItemString (class_dict, "ip", prop);
 	Py_DECREF (prop);
-	prop = Py_BuildValue ("s", long2ip_r (isp.start, buf));
+	long2ip_r (isp.start, buf);
+	prop = Py_BuildValue ("s", buf);
 	PyDict_SetItemString (class_dict, "start", prop);
 	Py_DECREF (prop);
-	prop = Py_BuildValue ("s", long2ip_r (isp.end, buf));
+	long2ip_r (isp.end, buf);
+	prop = Py_BuildValue ("s", buf);
 	PyDict_SetItemString (class_dict, "end", prop);
 	Py_DECREF (prop);
-	prop = Py_BuildValue ("s", long2ip_r (isp.netmask, buf));
+	long2ip_r (isp.netmask, buf);
+	prop = Py_BuildValue ("s", buf);
 	PyDict_SetItemString (class_dict, "netmask", prop);
 	Py_DECREF (prop);
-	prop = Py_BuildValue ("s", long2ip_r (networkv, buf));
+	long2ip_r (networkv, buf);
+	prop = Py_BuildValue ("s", buf);
 	PyDict_SetItemString (class_dict, "network", prop);
 	Py_DECREF (prop);
-	prop = Py_BuildValue ("s", long2ip_r (broadcastv, buf));
+	long2ip_r (broadcastv, buf);
+	prop = Py_BuildValue ("s", buf);
 	PyDict_SetItemString (class_dict, "broadcast", prop);
 	Py_DECREF (prop);
 	prop = Py_BuildValue ("s", isp.icode);
@@ -287,19 +296,24 @@ static PyObject * py_search_ex (PyObject * self, PyObject * args) { // {{{
 	prop = Py_BuildValue ("s", isp.ip);
 	PyDict_SetItemString (class_dict, "ip", prop);
 	Py_DECREF (prop);
-	prop = Py_BuildValue ("s", long2ip_r (isp.start, buf));
+	long2ip_r (isp.start, buf);
+	prop = Py_BuildValue ("s", buf);
 	PyDict_SetItemString (class_dict, "start", prop);
 	Py_DECREF (prop);
-	prop = Py_BuildValue ("s", long2ip_r (isp.end, buf));
+	long2ip_r (isp.end, buf);
+	prop = Py_BuildValue ("s", buf);
 	PyDict_SetItemString (class_dict, "end", prop);
 	Py_DECREF (prop);
-	prop = Py_BuildValue ("s", long2ip_r (netmask, buf));
+	long2ip_r (netmask, buf);
+	prop = Py_BuildValue ("s", buf);
 	PyDict_SetItemString (class_dict, "netmask", prop);
 	Py_DECREF (prop);
-	prop = Py_BuildValue ("s", long2ip_r (networkv, buf));
+	long2ip_r (networkv, buf);
+	prop = Py_BuildValue ("s", buf);
 	PyDict_SetItemString (class_dict, "network", prop);
 	Py_DECREF (prop);
-	prop = Py_BuildValue ("s", long2ip_r (broadcastv, buf));
+	long2ip_r (broadcastv, buf);
+	prop = Py_BuildValue ("s", buf);
 	PyDict_SetItemString (class_dict, "broadcast", prop);
 	Py_DECREF (prop);
 	prop = Py_BuildValue ("i", isp.size);

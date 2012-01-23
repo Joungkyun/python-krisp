@@ -5,6 +5,7 @@ $Id$
 2.1.2
 	* Tue Jan 24 2012 JoungKyun.Kim <http://oops.org>
 	- fixed missing search for krisp.h
+	- fixed wrong long2ip_r return pointer on 64bit gcc
 
 2.1.1
 	* Wed Apr 27 2011 JoungKyun.Kim <http://oops.org>
