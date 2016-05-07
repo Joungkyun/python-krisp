@@ -3,6 +3,9 @@ Revision history for Python extension KRISP
 $Id$
 
 2.1.2
+	* Sat May  7 2015 JoungKyun.Kim <http://oops.org>
+	- support python 3
+
 	* Tue Jan 24 2012 JoungKyun.Kim <http://oops.org>
 	- fixed missing search for krisp.h
 	- fixed wrong long2ip_r return pointer on 64bit gcc
