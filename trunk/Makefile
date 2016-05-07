@@ -22,7 +22,7 @@ test:
 	$(PYTHON) test.py
 
 dist:
-	version=`cat version.h | grep MOD_VERSION | awk '{print $$3}' | sed 's/"//g'`; \
+	version=`cat version.h | grep MOD_KRISP_VERSION | awk '{print $$3}' | sed 's/"//g'`; \
 	mkdir -p $(NAME)-$$version; \
 	cp -af $(DIST_FILES) Makefile *.c *.h *.py $(NAME)-$$version/; \
 	tar cvfpj $(NAME)-$$version.tar.bz2 $(NAME)-$$version; \
