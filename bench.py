@@ -35,11 +35,11 @@ def random_ip () :
 argc = len (sys.argv)
 
 if ( argc is not 2 or sys.argv[1] is '-h' ) :
-	print "Usage: %s query_limit" % sys.argv[0]
+	print ("Usage: %s query_limit" % sys.argv[0])
 
 err = [];
 p = krisp.open ('', err)
-print sys.argv[1]
+print (sys.argv[1])
 
 t1 = microtime (1)
 for i in range (0, int (sys.argv[1]), 1) :
@@ -52,6 +52,6 @@ t2 = microtime (1)
 
 krisp.close (p)
 
-print "Execute Time: %.2f sec" % (t2 - t1)
+print ("Execute Time: %.2f sec" % (t2 - t1))
 
 sys.exit (0)
