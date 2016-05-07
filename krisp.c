@@ -3,6 +3,7 @@
  */
 #include "Python.h"
 
+#include <ipcalc.h>
 #include <krisp.h>
 #include <stdlib.h>
 #include "version.h"
@@ -11,6 +12,17 @@
 	#define KR_INT_API  __attribute__ ((visibility("hidden")))
 #else
 	#define KR_INT_API
+#endif
+
+#if PY_MAJOR_VERSION >= 3
+	#define MOD_ERROR_VAL NULL
+	#define MOD_SUCCESS_VAL(val) val
+	#define MOD_INIT(name) PyMODINIT_FUNC PyInit_##name(void)
+	#define PyString_FromString PyBytes_FromString
+#else
+	#define MOD_ERROR_VAL
+	#define MOD_SUCCESS_VAL(val)
+	#define MOD_INIT(name) PyMODINIT_FUNC init##name(void)
 #endif
 
 static PyObject * ErrorObject;
@@ -22,11 +34,11 @@ KR_INT_API ulong krisp_format_convert (char * v) { // {{{
 } // }}}
 
 static PyObject * py_mod_version (PyObject * self, PyObject * args) { // {{{
-	return Py_BuildValue ("s", MOD_VERSION);
+	return Py_BuildValue ("s", MOD_KRISP_VERSION);
 } // }}}
 
 static PyObject * py_mod_uversion (PyObject * self, PyObject * args) { // {{{
-	return Py_BuildValue ("s", MOD_UVERSION);
+	return Py_BuildValue ("s", MOD_KRISP_UVERSION);
 } // }}}
 
 static PyObject * py_version (PyObject * self, PyObject * args) { // {{{
@@ -164,8 +176,10 @@ static PyObject * py_open (PyObject * self, PyObject * args) { // {{{
 } // }}}
 
 static PyObject * py_search (PyObject * self, PyObject * args) { // {{{
+#if PY_MAJOR_VERSION < 3
 	static PyObject *	ret = NULL;
-	static PyObject *	new = NULL;
+#endif
+	PyObject *			new = NULL;
 	PyObject *			class_dict;
 	PyObject *			prop;
 	PyObject *			err = NULL;
@@ -240,18 +254,24 @@ static PyObject * py_search (PyObject * self, PyObject * args) { // {{{
 	PyDict_SetItemString (class_dict, "cname", prop);
 	Py_DECREF (prop);
 
+#if PY_MAJOR_VERSION >= 3
+	new = _PyNamespace_New (class_dict);
+#else
 	if ( ret == NULL )
 		ret = PyClass_New(NULL, PyDict_New(), PyString_FromString("KRNET_API"));
 
 	new = PyInstance_NewRaw(ret, class_dict);
+#endif
 	Py_DECREF (class_dict);
 
 	return new;
 } // }}}
 
 static PyObject * py_search_ex (PyObject * self, PyObject * args) { // {{{
+#if PY_MAJOR_VERSION < 3
 	static PyObject *	ret = NULL;
-	static PyObject *	new = NULL;
+#endif
+	PyObject *			new = NULL;
 	PyObject *			class_dict;
 	PyObject *			prop;
 	PyObject *			err = NULL;
@@ -334,10 +354,14 @@ static PyObject * py_search_ex (PyObject * self, PyObject * args) { // {{{
 	// free memory about kr_search_ex
 	initStruct_ex (&isp, true);
 
+#if PY_MAJOR_VERSION >= 3
+	new = _PyNamespace_New (class_dict);
+#else
 	if ( ret == NULL )
 		ret = PyClass_New(NULL, PyDict_New(), PyString_FromString("KRNET_API"));
 
 	new = PyInstance_NewRaw(ret, class_dict);
+#endif
 	Py_DECREF (class_dict);
 
 	return new;
@@ -399,11 +423,36 @@ static struct PyMethodDef krisp_methods[] = { // {{{
 	{ NULL, NULL }
 }; // }}}
 
-void initkrisp () { // {{{
+#if PY_MAJOR_VERSION >= 3
+static struct PyModuleDef krisp_moduledef = { // {{{
+	PyModuleDef_HEAD_INIT,
+	"krisp",
+	"detect IPv4 Geo data",
+	-1,
+	krisp_methods,
+	NULL,
+	NULL,
+	NULL,
+	NULL
+}; // }}}
+#endif
+
+MOD_INIT(krisp) { // {{{
 	PyObject *	m;
 
+#if PY_MAJOR_VERSION >= 3
+	m = PyModule_Create (&krisp_moduledef);
+#else
 	m = Py_InitModule ("krisp", krisp_methods);
+#endif
+
+	if ( m == NULL )
+		return MOD_ERROR_VAL;
+
+	PyModule_AddStringConstant (m, "__version__", MOD_KRISP_VERSION);
 	ErrorObject = Py_BuildValue ("s", "krisp initialize error");
+
+	return MOD_SUCCESS_VAL(m);
 } // }}}
 
 /*
