@@ -2,8 +2,9 @@
  * $Id$
  */
 
-#define MOD_VERSION "2.1.1"
-#define MOD_UVERSION "002001001"
+#define MOD_KRISP_VERSION "2.1.2"
+#define MOD_KRISP_UVERSION "002001002"
+#define MOD_KRISP_LVERSION 0x02001002
 
 /*
  * Local variables:
