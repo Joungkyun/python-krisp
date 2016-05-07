@@ -23,7 +23,7 @@ test:
 
 dist:
 	version=`cat version.h | grep MOD_KRISP_VERSION | awk '{print $$3}' | sed 's/"//g'`; \
-	mkdir -p $(NAME)-$$version; \
-	cp -af $(DIST_FILES) Makefile *.c *.h *.py $(NAME)-$$version/; \
-	tar cvfpj $(NAME)-$$version.tar.bz2 $(NAME)-$$version; \
-	rm -fr $(NAME)-$$version
+	mkdir -p krisp-$$version; \
+	cp -af $(DIST_FILES) Makefile *.c *.h *.py krisp-$$version/; \
+	tar cvfpj krisp-$$version.tar.bz2 krisp-$$version; \
+	rm -fr krisp-$$version
