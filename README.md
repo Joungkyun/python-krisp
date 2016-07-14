@@ -44,6 +44,10 @@ This module requires these libraries:
 If you use libkrisp 3.0 or before, use v1 branch. Head branch is
 required 3.1 or after.
 
+## USAGE
+
+See also [wiki](https://github.com/Joungkyun/python-krisp/wiki) pages.
+
 
 ## COPYRIGHT AND LICENCE
 
