@@ -16,7 +16,7 @@ install:
 clean:
 	-rm -rf build *.pyc *.bz2
 
-test:
+test: build
 	$(PYTHON) test.py
 
 dist:
