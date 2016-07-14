@@ -3,7 +3,7 @@ NAME = mod_krisp
 PROG = krisp
 
 
-DIST_FILES = COPYING Changes README
+DIST_FILES = COPYING Changes README.md
 
 all: build
 
