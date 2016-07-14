@@ -4,7 +4,7 @@ KRISP python extension v2
 
 ## DESCRIPTION
 
-This is python extension that is libkrisp python frontend.
+This is python extension that is [libkrisp](https://github.com/Joungkyun/libkrisp) python frontend.
 This modules is thread safe.
 
 
@@ -41,7 +41,7 @@ This module requires these libraries:
 
 [libkrisp](https://github.com/Joungkyun/libkrisp) 3.1 or after.
 
-If you use libkrisp 3.0 or before, use v1 branch. Head branch is
+If you use [libkrisp](https://github.com/Joungkyun/libkrisp) 3.0 or before, use v1 branch. Head branch is
 required 3.1 or after.
 
 ## USAGE
