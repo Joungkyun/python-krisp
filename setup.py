@@ -29,8 +29,8 @@ setup (
 		version      = '2.0.2',
 		description  = 'python binding for libkrisp API',
 		author       = 'JoungKyun.Kim',
-		author_email = 'admin@oops.org',
-		url          = 'http://oops.org',
+		author_email = 'joungkyun@gmail.com',
+		url          = 'http://github.com/Joungkyun/python-krisp',
 		license      = 'LGPL',
 		platforms    = 'x86/x86_64',
 		ext_modules  = [
