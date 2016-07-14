@@ -1,40 +1,53 @@
-KRISP extension 2.0.2
+KRISP python extension v2
+===
 
 
-DESCRIPTION
+## DESCRIPTION
 
 This is python extension that is libkrisp python frontend.
 This modules is thread safe.
 
 
-INSTALLATION
+## INSTALLATION
 
 To install this extension type the following:
 
-    make install
+```bash
+[root@host python-krisp]$ make install
+```
 
-    build options:
+***Build options:***
 
-        make build : only build
-        make test  : test building module
-        make clean : clean build object
+```bash
+[root@host python-krisp]$ # only build
+[root@host python-krisp]$ make build
+[root@host python-krisp]$ # test module
+[root@host python-krisp]$ make test
+[root@host python-krisp]$ # clean built objects
+[root@host python-krisp]$ make clean
+[root@host python-krisp]$ # package this source
+`[root@host python-krisp]$ make dist
+```
 
-        if your python path is not /usr/bin/python:
-        make PYTHON=path option
+If your python path is not /usr/bin/python:
 
-DEPENDENCIES
+```bash
+[root@host python-krisp]$ make install PYTHON=/opt/python3/bin/python3
+```
+
+## DEPENDENCIES
 
 This module requires these libraries:
 
-    Over libkrisp 3.1.0
+[libkrisp](https://github.com/Joungkyun/libkrisp) 3.1 or after.
 
-    If you use libkrisp under 3.1 (for example 2.x.x), use
-    v1 branch. Head branch is required over libkrisp 3.1.0.
+If you use libkrisp 3.0 or before, use v1 branch. Head branch is
+required 3.1 or after.
 
 
-COPYRIGHT AND LICENCE
+## COPYRIGHT AND LICENCE
 
-Copyright (C) 2016 by JoungKyun.Kim <http://oops.org>
+Copyright (C) 2016 by JoungKyun.Kim &lt;http://oops.org&gt;
 
 This program is free software; you can redistribute it and/or modify it
 under the terms of the GNU LESSER GENERAL PUBLIC LICENSE as published by
