@@ -26,7 +26,7 @@ To install this extension type the following:
 [root@host python-krisp]$ # clean built objects
 [root@host python-krisp]$ make clean
 [root@host python-krisp]$ # package this source
-`[root@host python-krisp]$ make dist
+[root@host python-krisp]$ make dist
 ```
 
 If your python path is not /usr/bin/python:
