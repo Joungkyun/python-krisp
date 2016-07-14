@@ -1,7 +1,5 @@
 Revision history for Python extension KRISP
 
-$Id$
-
 2.1.2
 	* Sat May  7 2015 JoungKyun.Kim <http://oops.org>
 	- support python 3

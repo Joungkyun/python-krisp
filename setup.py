@@ -1,7 +1,5 @@
 #!/usr/bin/python
 
-# $Id$
-
 from distutils.core import setup, Extension
 import os
 import re

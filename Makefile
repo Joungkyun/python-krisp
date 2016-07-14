@@ -1,5 +1,3 @@
-# $Id$
-
 PYTHON = /usr/bin/python
 NAME = mod_krisp
 PROG = krisp
