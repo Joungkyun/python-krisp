@@ -7,7 +7,7 @@ KRISP python extension v2
 This is python extension that is [libkrisp](https://github.com/Joungkyun/libkrisp) python frontend.
 This modules is thread safe.
 
-python krisp extension provides network calcluration and searching isp/country information for given ip address.
+python krisp extension provides network calcluration and searching ISP/country information for given ip address.
 
 ## INSTALLATION
 
